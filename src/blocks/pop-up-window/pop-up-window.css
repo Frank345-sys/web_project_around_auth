@@ -1,0 +1,28 @@
+.pop-up-window {
+  height: 75vh;
+  max-width: 75vw;
+  position: relative;
+}
+
+.pop-up-window img {
+  height: 100%;
+  width: 100%;
+}
+
+.pop-up-window h3 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ffffff;
+}
+
+@media screen and (max-width: 768px) {
+  .pop-up-window {
+    height: auto;
+    max-width: auto;
+  }
+  .pop-up-window img {
+    height: unset;
+    width: 100%;
+  }
+}

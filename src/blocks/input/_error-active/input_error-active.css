@@ -1,0 +1,32 @@
+.input_error-active {
+  border-radius: 4px;
+  transition: all 0.4s;
+  outline: 2px solid red;
+  border-bottom: 2px solid transparent;
+}
+
+.input_error-active:focus {
+  transition: all 0.4s;
+  outline: 2px solid red;
+}
+
+.input_error-active:invalid ~ .wrapper__label {
+  transform: translateY(-24px);
+  font-size: 15px;
+  /*color: white;*/
+  color: red;
+  padding: 2px 4px;
+  transition: all 0.4s;
+  background-color: black;
+  border-radius: 4px;
+}
+
+.input_error-active:invalid:focus ~ .wrapper__label {
+  transform: translateY(-24px);
+  font-size: 15px;
+  color: white;
+  padding: 2px 4px;
+  transition: all 0.4s;
+  background-color: red;
+  border-radius: 4px;
+}

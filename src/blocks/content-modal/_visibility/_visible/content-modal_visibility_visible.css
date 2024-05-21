@@ -1,0 +1,7 @@
+.content-modal_visibility_visible {
+  visibility: visible;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  opacity: 1;
+  transition: opacity 0.3s;
+}

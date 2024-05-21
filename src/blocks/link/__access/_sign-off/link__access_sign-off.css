@@ -1,0 +1,11 @@
+.link__access_sign-off {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  transition: color 0.3s;
+}
+
+.link__access_sign-off:hover {
+  color: gray;
+  transition: color 0.3s;
+}

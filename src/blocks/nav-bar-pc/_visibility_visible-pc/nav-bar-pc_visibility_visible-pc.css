@@ -1,0 +1,5 @@
+.nav-bar-pc_visibility_visible-pc {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s;
+}

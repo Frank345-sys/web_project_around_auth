@@ -1,0 +1,68 @@
+.card {
+  max-width: 280px;
+  display: grid;
+  grid-template-rows: 280px 80px;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  transition: transform 0.3s;
+}
+
+.card:nth-child(3n-2) {
+  animation: fadeInCard 0.3s ease-in-out both;
+}
+
+.card:nth-child(3n-1) {
+  animation: fadeInCard 0.5s ease-in-out both;
+}
+
+.card:nth-child(3n) {
+  animation: fadeInCard 0.7s ease-in-out both;
+}
+
+@keyframes fadeInCard {
+  from {
+    opacity: 0;
+    top: -50px;
+  }
+  to {
+    opacity: 1;
+    top: 0;
+  }
+}
+
+/*
+@keyframes addcard {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+*/
+
+/*
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shining-reveal {
+  animation: shimmer 1s linear;
+  background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+  background-size: 1000px 104px;
+  position: relative;
+}
+*/

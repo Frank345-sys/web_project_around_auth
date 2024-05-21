@@ -1,0 +1,5 @@
+.card__button-delete_visibility_visible {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+}

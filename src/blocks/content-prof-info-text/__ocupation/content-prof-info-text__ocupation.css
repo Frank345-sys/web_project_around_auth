@@ -1,0 +1,28 @@
+.content-prof-info-text__ocupation {
+  height: 24px;
+  width: 100%;
+  max-width: 50%;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .content-prof-info-text__ocupation {
+    font-size: 14.4px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .content-prof-info-text__ocupation {
+    height: 18px;
+    font-size: 14px;
+    line-height: 17px;
+    align-self: center;
+    text-align: center;
+  }
+}

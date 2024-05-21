@@ -1,0 +1,11 @@
+.pop-up-window__button-close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -41px;
+  right: -35px;
+  background-color: rgba(0, 0, 0, 0);
+  border: unset;
+  cursor: pointer;
+}

@@ -1,0 +1,10 @@
+.button_inactive {
+  cursor: not-allowed;
+  background-color: #cccccc !important;
+  color: #666666;
+  /*background-color: rgb(174, 174, 174);*/
+  transition: all 0.3s;
+}
+.button_inactive > * {
+  pointer-events: none;
+}

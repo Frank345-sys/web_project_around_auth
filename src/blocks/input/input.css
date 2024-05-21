@@ -1,0 +1,20 @@
+.input {
+  height: 48px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  margin: 10px 0;
+  padding-left: 10px;
+  box-sizing: border-box;
+  outline: 2px solid white;
+  transition: all 0.4s;
+}
+
+.input:focus {
+  border-radius: 2px;
+  transition: all 0.4s;
+  outline: 2px solid rgb(0, 123, 255);
+}

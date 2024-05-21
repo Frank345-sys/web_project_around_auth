@@ -1,0 +1,21 @@
+.modal {
+  height: auto;
+  max-height: 330px;
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 10px;
+  color: black;
+  padding: 36px;
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .modal {
+    max-height: 322px;
+    max-width: 282px;
+  }
+}

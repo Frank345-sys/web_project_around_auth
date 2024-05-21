@@ -1,0 +1,7 @@
+.content-footer-card {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 18px 31px 21px;
+}

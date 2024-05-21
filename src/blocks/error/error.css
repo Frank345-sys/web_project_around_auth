@@ -1,0 +1,11 @@
+.error {
+  display: table-cell;
+  width: 100%;
+  vertical-align: middle;
+  height: 28px;
+  color: red;
+  font-size: 12px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.4s;
+}

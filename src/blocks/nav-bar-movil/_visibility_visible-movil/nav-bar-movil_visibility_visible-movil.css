@@ -1,0 +1,8 @@
+.nav-bar-movil_visibility_visible-movil {
+  height: auto;
+  opacity: 1;
+  visibility: visible;
+  padding: 40px 0;
+  border-bottom: 1px solid #545454;
+  transition: all 0.3s;
+}

@@ -1,0 +1,16 @@
+.content-footer-card__likes {
+  /*display: table-cell;
+  width: 100%;
+  vertical-align: middle;
+  height: 28px;*/
+  position: relative;
+  width: 25px;
+  top: 22px;
+  right: 26px;
+  color: black;
+  font-size: 12px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

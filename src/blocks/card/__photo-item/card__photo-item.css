@@ -1,0 +1,53 @@
+/*
+.card__photo-item {
+  max-width: 280px;
+  animation: shimmer-card 1s infinite linear;
+  background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+  background-size: 1000px 104px;
+  position: relative;
+}
+*/
+.card__photo-item {
+  max-width: 280px;
+}
+
+.card__photo-item img {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
+
+/*
+
+@keyframes shimmer-card {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+*/
+
+/*
+.card__photo-item {
+  max-width: 280px;
+  background-image: linear-gradient(
+    -60deg,
+    transparent 0%,
+    transparent 40%,
+    #1074d844 40%,
+    #1074d844 60%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  background-position-x: 150%;
+}
+
+.card__photo-item:hover {
+  background-position-x: -150%;
+  transition: all 1000ms;
+}
+*/

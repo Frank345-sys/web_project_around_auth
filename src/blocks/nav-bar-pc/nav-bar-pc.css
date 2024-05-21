@@ -1,0 +1,15 @@
+.nav-bar-pc {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  list-style: none;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-bar-pc {
+    display: none;
+  }
+}

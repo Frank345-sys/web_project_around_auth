@@ -1,0 +1,9 @@
+.card__photo-item-user {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
+}

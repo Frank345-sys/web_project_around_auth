@@ -1,0 +1,25 @@
+.profile-image {
+  height: 120px;
+  width: 120px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.profile-image:hover .profile-image__edit-icon {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.profile-image:hover .profile-image__image {
+  opacity: 0.2;
+}
+
+@media screen and (max-width: 768px) {
+  .profile-image {
+    margin-bottom: 30px;
+  }
+}

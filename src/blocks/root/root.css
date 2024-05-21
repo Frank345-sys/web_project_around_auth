@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  color: white;
+  background-color: #000000;
+  min-height: 100vh;
+}
+
+button {
+  transition: opacity 0.3s;
+}
+
+button:hover {
+  opacity: 0.6;
+}

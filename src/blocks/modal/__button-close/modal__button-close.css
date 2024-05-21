@@ -1,0 +1,28 @@
+.modal__button-close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  top: -48px;
+  right: -9%;
+  cursor: pointer;
+}
+
+.modal__button-close img {
+  height: 40px;
+  width: 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .modal__button-close {
+    top: -45px;
+    right: 0%;
+  }
+
+  .modal__button-close img {
+    height: 26px;
+    width: 26px;
+  }
+}

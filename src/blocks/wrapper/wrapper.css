@@ -1,0 +1,33 @@
+.wrapper {
+  height: auto;
+  width: auto;
+  position: relative;
+  margin-top: 5px;
+}
+
+.wrapper .wrapper__input:focus ~ .wrapper__label {
+  transform: translateY(-24px);
+  font-size: 15px;
+  /*color: white;*/
+  color: rgb(0, 123, 255);
+  padding: 2px 4px;
+  transition: all 0.4s;
+  background-color: rgb(0, 0, 0);
+  border-radius: 4px;
+}
+
+.wrapper .wrapper__input:valid ~ .wrapper__label {
+  transform: translateY(-24px);
+  font-size: 15px;
+  /*color: black;*/
+  color: #cccccc;
+  padding: 2px 4px;
+  transition: all 0.4s;
+  background-color: black;
+  border-radius: 4px;
+}
+
+.wrapper .wrapper__input:valid:focus ~ .wrapper__label {
+  color: white;
+  background-color: rgb(0, 123, 255);
+}

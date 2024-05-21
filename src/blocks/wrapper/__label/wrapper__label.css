@@ -1,0 +1,8 @@
+.wrapper__label {
+  position: absolute;
+  bottom: 24px;
+  left: 6px;
+  color: #cccccc;
+  pointer-events: none;
+  transition: all 0.4s;
+}

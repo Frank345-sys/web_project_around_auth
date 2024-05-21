@@ -1,0 +1,37 @@
+.content-prof-info-text__edit-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  background-color: black;
+  border: 2px solid white;
+  position: absolute;
+  top: 15px;
+  right: 0;
+  cursor: pointer;
+}
+
+.content-prof-info-text__edit-button img {
+  height: 60%;
+  width: 60%;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .content-prof-info-text__edit-button {
+    right: 7%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .content-prof-info-text__edit-button {
+    width: 18px;
+    height: 18px;
+    top: 6px;
+  }
+
+  .content-prof-info-text__edit-button img {
+    width: 7.5px;
+    height: 7.5px;
+  }
+}

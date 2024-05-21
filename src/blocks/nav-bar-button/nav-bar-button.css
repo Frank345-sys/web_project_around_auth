@@ -1,0 +1,20 @@
+.nav-bar-button {
+  cursor: pointer;
+  border: none;
+  display: none;
+  background-color: transparent;
+}
+
+.nav-bar-button img {
+  height: 24px;
+  width: 24px;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-bar-button {
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+}

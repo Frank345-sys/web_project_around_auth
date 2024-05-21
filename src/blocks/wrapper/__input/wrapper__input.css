@@ -1,0 +1,35 @@
+.wrapper__input {
+  height: 48px;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #cccccc;
+  outline: 2px solid transparent;
+  color: #cccccc;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 17px;
+  margin: 10px 0;
+  padding-left: 10px;
+  box-sizing: border-box;
+  background-color: transparent;
+  transition: all 0.4s;
+}
+
+.wrapper__input:focus {
+  border-radius: 4px;
+  transition: all 0.4s;
+  outline: 2px solid rgb(0, 123, 255);
+  border-bottom: 2px solid transparent;
+  transition: all 0.4s ease-in-out 0.1s;
+}
+
+.wrapper__input:valid {
+  border-radius: 4px;
+  transition: all 0.4s;
+  outline: 2px solid #cccccc;
+  border-bottom: 2px solid transparent;
+}
+
+.wrapper__input:valid:focus {
+  outline: 2px solid rgb(0, 123, 255);
+}

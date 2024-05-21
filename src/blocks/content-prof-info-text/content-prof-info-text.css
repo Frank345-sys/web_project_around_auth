@@ -1,0 +1,20 @@
+.content-prof-info-text {
+  width: 100%;
+  max-width: 415px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .content-prof-info-text {
+    max-width: 345px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .content-prof-info-text {
+    width: 280px;
+    flex-direction: column;
+  }
+}
