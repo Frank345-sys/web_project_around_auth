@@ -275,7 +275,7 @@ function App() {
                   {routes.map(({ path, element }) => (
                     <Route key={path} path={path} element={element} />
                   ))}
-                  <Route path="*" element={<Navigate to="/login" />} />
+                  <Route path="/" element={<Navigate to="/login" />} />
                 </Routes>
               </div>
             </CSSTransition>
