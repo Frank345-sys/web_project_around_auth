@@ -178,7 +178,7 @@ function App() {
 
   const routes = [
     {
-      path: "/web_project_around_auth/login",
+      path: "/login",
       name: "Login",
       element: (
         <Login
@@ -203,7 +203,7 @@ function App() {
       nodeRef: createRef(),
     },
     {
-      path: "/web_project_around_auth/main",
+      path: "/main",
       name: "Main",
       element: (
         <ProtectedRoute
@@ -275,10 +275,7 @@ function App() {
                   {routes.map(({ path, element }) => (
                     <Route key={path} path={path} element={element} />
                   ))}
-                  <Route
-                    path="*"
-                    element={<Navigate to="/web_project_around_auth/login" />}
-                  />
+                  <Route path="*" element={<Navigate to="/login" />} />
                 </Routes>
               </div>
             </CSSTransition>
