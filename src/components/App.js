@@ -27,7 +27,7 @@ function App() {
 
   //useState
   const [email, setEmail] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isLoadingPage, setIsLoadingPage] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isCorrectModalOpen, setIsCorrectModalOpen] = useState(false);
