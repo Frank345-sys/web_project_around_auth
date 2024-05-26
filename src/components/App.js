@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from "react";
+import React, { useState, useEffect, createRef, useRef } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 import {
@@ -33,37 +33,24 @@ function App() {
   const [isCorrectModalOpen, setIsCorrectModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoadCards, setIsLoadCards] = useState(false);
+  const [deletedCard, setDeletedCard] = useState(false);
   const [cards, setCards] = useState([]);
 
   //metodos para iniciar o cerrar la sesión
-
-  const isLogginTrue = () => {
-    setIsLoggedIn(true);
-  };
-
-  const isLoginFalse = () => {
-    setIsLoggedIn(false);
-  };
+  const isLogginTrue = () => setIsLoggedIn(true);
+  const isLoginFalse = () => setIsLoggedIn(false);
 
   //metodos para abrir o cerrar modal success
-  const openErrorModal = () => {
-    setIsErrorModalOpen(true);
-  };
-
-  const closeErrorModal = () => {
-    setIsErrorModalOpen(false);
-  };
+  const openErrorModal = () => setIsErrorModalOpen(true);
+  const closeErrorModal = () => setIsErrorModalOpen(false);
 
   //metodos para abrir o cerrar modal fail
-  const openCorrectModal = () => {
-    setIsCorrectModalOpen(true);
-  };
+  const openCorrectModal = () => setIsCorrectModalOpen(true);
+  const closeCorrectModal = () => setIsCorrectModalOpen(false);
 
-  const closeCorrectModal = () => {
-    setIsCorrectModalOpen(false);
-  };
+  /* ////////////////////// check Token ////////////////////// */
 
-  const tokenCheck = async () => {
+  const tokenCheck = useRef(async () => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       auth
@@ -82,16 +69,20 @@ function App() {
     } else {
       setIsLoadingPage(true);
     }
-  };
+  });
 
   useEffect(() => {
-    tokenCheck();
+    tokenCheck.current();
   }, []);
+
+  /* ////////////////////// check Token ////////////////////// */
+
+  /* ////////////////////// currentUser ////////////////////// */
 
   const fetchCurrentUser = async () => {
     try {
-      const user = await api.get("users/me");
-      setCurrentUser(user);
+      const result = await api.get("users/me");
+      setCurrentUser(result);
     } catch (error) {
       console.error("Error al obtener los datos del usuario:", error);
     }
@@ -100,8 +91,14 @@ function App() {
   useEffect(() => {
     if (isLoggedIn) {
       fetchCurrentUser();
+    } else {
+      setCurrentUser(null);
     }
   }, [isLoggedIn]);
+
+  /* ////////////////////// currentUser ////////////////////// */
+
+  /* ////////////////////// fetch Cards ////////////////////// */
 
   const fetchCards = async () => {
     try {
@@ -116,82 +113,67 @@ function App() {
   useEffect(() => {
     if (isLoggedIn) {
       fetchCards();
+    } else {
+      setCards([]);
+      setIsLoadCards(false);
     }
-  }, [isLoggedIn, cards]);
+  }, [isLoggedIn, deletedCard]);
 
+  /* ////////////////////// fetch Cards ////////////////////// */
+
+  /* ///////////////////// Cerrar sesión ///////////////////// */
   const handleSignOut = () => {
     localStorage.removeItem("jwt");
     setEmail("");
     isLoginFalse();
   };
 
-  const handleFormEditSubmit = async (name, occupation) => {
-    try {
-      return await api.patch("users/me", {
-        name: name,
-        about: occupation,
-      });
-    } catch (error) {
-      console.error("Error al actualizar los datos del usuario: ", error);
-      throw error;
-    }
+  /* ///////////////////// Editar Perfil ///////////////////// */
+  const handleFormEditProfileSubmit = (name, occupation) => {
+    return api.patch("users/me", {
+      name: name,
+      about: occupation,
+    });
   };
 
+  /* ////////////////////// Crear Card ////////////////////// */
   const handleFormCreateCardSubmit = async (name, imageUrl) => {
     try {
       const result = await api.post("cards", {
         name: name,
         link: imageUrl,
       });
-      setCards((prevCard) => [result, ...prevCard]);
+      setCards((prevCards) => [result, ...prevCards]);
     } catch (error) {
-      console.error("Error al crear la card: ", error);
-      throw error;
+      throw error; // re-lanza el error para ser capturado en handleSubmit en AddPlacePopup
     }
   };
 
-  const handleFormEditAvatarSubmit = async (url) => {
-    try {
-      return await api.patch("users/me/avatar", {
-        avatar: url,
-      });
-    } catch (error) {
-      console.error(
-        "Error al actualizar la foto de perfil del usuario: ",
-        error
-      );
-      throw error;
-    }
+  /* //////////////////// Editar avatar //////////////////// */
+  const handleFormEditAvatarSubmit = (url) => {
+    return api.patch("users/me/avatar", {
+      avatar: url,
+    });
   };
 
+  /* //////////////////// Eliminar card //////////////////// */
   const handleCardDelete = async (cardId) => {
     try {
       await api.delete(`cards/${cardId}`);
-      setCards((prevCard) =>
-        prevCard.filter((cardItem) => cardItem.id !== cardId)
-      );
+      setDeletedCard(!deletedCard);
     } catch (error) {
-      console.error("Error al eliminar la tarjeta del usuario: ", error);
-      throw error;
+      throw error; // re-lanza el error para ser capturado en handleConfirmDeleteSubmit en Main
     }
   };
 
-  const handleLikeCard = async (idCard) => {
-    try {
-      return await api.put(`cards/likes/${idCard}`);
-    } catch (error) {
-      console.error("Error al dar like a la tarjeta: ", error);
-      throw error;
-    }
+  /* ///////////////////// Like card ////////////////////// */
+  const handleLikeCard = (idCard) => {
+    return api.put(`cards/likes/${idCard}`);
   };
 
-  const handleDislikeCard = async (idCard) => {
-    try {
-      return await api.delete(`cards/likes/${idCard}`);
-    } catch (error) {
-      console.error("Error al dar dislike a la tarjeta: ", error);
-      throw error;
-    }
+  /* //////////////////// Dislike card //////////////////// */
+  const handleDislikeCard = (idCard) => {
+    return api.delete(`cards/likes/${idCard}`);
   };
 
   const routes = [
@@ -227,12 +209,13 @@ function App() {
         <ProtectedRoute
           loggedIn={isLoggedIn}
           component={Main}
-          onEditProfile={handleFormEditSubmit}
+          onEditProfile={handleFormEditProfileSubmit}
           onEditAvatar={handleFormEditAvatarSubmit}
           onAddPlace={handleFormCreateCardSubmit}
           onDeleteCard={handleCardDelete}
           onLikeCard={handleLikeCard}
           onDisLikeCard={handleDislikeCard}
+          openModalError={openErrorModal}
           isLoadCards={isLoadCards}
           cards={cards}
         />
@@ -253,18 +236,31 @@ function App() {
           navigate={navigate}
           email={email}
         />
+
         <InfoTooltip isOpen={isErrorModalOpen} onClose={closeErrorModal}>
-          <img className="modal__icon" src={vector_error_icon}></img>
+          <img
+            className="modal__icon"
+            src={vector_error_icon}
+            alt="ilustración fail"
+          ></img>
           <h2 className="modal__title modal__title_aling-self-center">
             Uy, algo salió mal. Por favor, inténtalo de nuevo.
           </h2>
         </InfoTooltip>
-        <InfoTooltip isOpen={isCorrectModalOpen} onClose={closeCorrectModal}>
-          <img className="modal__icon" src={vector_correct_icon}></img>
-          <h2 className="modal__title modal__title_aling-self-center">
-            ¡Correcto! Ya estás registrado.
-          </h2>
-        </InfoTooltip>
+
+        {isLoggedIn === false && (
+          <InfoTooltip isOpen={isCorrectModalOpen} onClose={closeCorrectModal}>
+            <img
+              className="modal__icon"
+              src={vector_correct_icon}
+              alt="ilustración success"
+            ></img>
+            <h2 className="modal__title modal__title_aling-self-center">
+              ¡Correcto! Ya estás registrado.
+            </h2>
+          </InfoTooltip>
+        )}
+
         {isLoadingPage ? (
           <SwitchTransition>
             <CSSTransition

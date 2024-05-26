@@ -1,10 +1,12 @@
 import React, { useState, useRef } from "react";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { Link } from "react-router-dom";
 import * as auth from "../utils/auth";
 
 function Login({ navigate, logginTrue, openModalError, setEmailUser }) {
   const inputEmailRef = useRef(null);
   const inputPasswordRef = useRef(null);
+  const statusRef = useRef(null);
 
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
@@ -115,7 +117,19 @@ function Login({ navigate, logginTrue, openModalError, setEmailUser }) {
               type="submit"
               disabled={isSubmitButtonDisabled}
             >
-              {statusLogin ? "Iniciando..." : "Iniciar sesión"}
+              <SwitchTransition>
+                <CSSTransition
+                  key={statusLogin}
+                  nodeRef={statusRef}
+                  timeout={300}
+                  classNames="fade"
+                  unmountOnExit
+                >
+                  <div ref={statusRef}>
+                    {statusLogin ? "Iniciando..." : "Iniciar sesión"}
+                  </div>
+                </CSSTransition>
+              </SwitchTransition>
             </button>
             <div className="link">
               <p className="link__title">¿Aún no eres miembro?</p>

@@ -2,24 +2,35 @@
   height: 120px;
   width: 120px;
   display: flex;
-  position: relative;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   z-index: 0;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .profile-image:hover .profile-image__edit-icon {
   opacity: 1;
-  cursor: pointer;
 }
 
 .profile-image:hover .profile-image__image {
   opacity: 0.2;
 }
 
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .profile-image {
+    height: 110px;
+    width: 110px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .profile-image {
     margin-bottom: 30px;
+  }
+
+  .profile-image:hover .profile-image__image {
+    opacity: 1;
   }
 }

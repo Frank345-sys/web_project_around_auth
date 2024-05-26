@@ -36,26 +36,26 @@ function Card({
   };
 
   const handleLikeClick = async () => {
-    if (isLiked === false) {
+    if (isLiked) {
       try {
-        await onLike(idCard).then((result) => {
-          setCountLikes(result.likes.length);
-          setIsLiked(isLiked ? false : true);
-        });
-      } catch (error) {
-        console.error("Error al dar like a la tarjeta:", error);
-      }
-    } else if (isLiked === true) {
-      try {
-        await onDisLike(idCard).then((result) => {
-          setCountLikes(result.likes.length);
-          setIsLiked(isLiked ? false : true);
-        });
+        const result = await onDisLike(idCard);
+        setCountLikes(result.likes.length);
+        setIsLiked(!isLiked);
       } catch (error) {
         console.error("Error al dar Dislike a la tarjeta:", error);
       }
+    } else {
+      try {
+        const result = await onLike(idCard);
+        setCountLikes(result.likes.length);
+        setIsLiked(!isLiked);
+      } catch (error) {
+        console.error("Error al dar like a la tarjeta:", error);
+      }
     }
   };
+
+  // className="card"
 
   return (
     <>
@@ -86,20 +86,22 @@ function Card({
         </div>
         <div className="content-footer-card">
           <h2 className="content-footer-card__title">{name}</h2>
-          <button
-            type="button"
-            className="heart-button"
-            onClick={handleLikeClick}
-          >
-            <span
-              className={`heart-button__icon ${
-                isLiked ? "heart-button__icon_liked" : ""
-              }`}
+          <div className="content-footer-card__content-button">
+            <button
+              type="button"
+              className="heart-button"
+              onClick={handleLikeClick}
             >
-              ❤️
-            </span>
-          </button>
-          <span className="content-footer-card__likes">{countLikes}</span>
+              <span
+                className={`heart-button__icon ${
+                  isLiked ? "heart-button__icon_liked" : ""
+                }`}
+              >
+                ❤️
+              </span>
+            </button>
+            <span className="heart-button__likes">{countLikes}</span>
+          </div>
         </div>
       </article>
     </>

@@ -1,17 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import vector_close_icon from "../images/vector_close_icon.png";
 
 function EditAvatarPopup({
   onAvatarUser,
   isOpen,
   onClose,
+  openModalError,
   formEditAvatarSubmit,
 }) {
   const inputUrlAvatarRef = useRef(null);
+  const statusRef = useRef(null);
+
   const [statusEditPhoto, setStatusEditPhoto] = useState(false);
+  const [urlAvatar, setUrlAvatar] = useState("");
   const [errorUrlAvatar, setErrorUrlAvatar] = useState(false);
   const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
-  const [urlAvatar, setUrlAvatar] = useState("");
 
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -19,25 +23,23 @@ function EditAvatarPopup({
     }
   };
 
-  const handleEscapeKeyPress = (e) => {
+  const handleEscapeKeyPress = useRef((e) => {
     if (e.key === "Escape") {
       onClose();
     }
-  };
+  });
 
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKeyPress);
+      document.addEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "hidden";
       setUrlAvatar("");
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKeyPress);
+    } else if (isOpen === false && document.body.style.overflow === "hidden") {
+      document.removeEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "auto";
       setErrorUrlAvatar(false);
       setIsSubmitButtonDisabled(true);
-    };
+    }
   }, [isOpen]);
 
   const handleAvatarChange = (e) => {
@@ -50,12 +52,13 @@ function EditAvatarPopup({
     e.preventDefault();
     setStatusEditPhoto(true);
     try {
-      await formEditAvatarSubmit(urlAvatar).then((result) => {
-        setStatusEditPhoto(false);
-        onClose();
-        onAvatarUser(result.avatar);
-      });
+      const result = await formEditAvatarSubmit(urlAvatar);
+      setStatusEditPhoto(false);
+      onClose();
+      onAvatarUser(result.avatar);
     } catch (error) {
+      onClose();
+      openModalError();
       console.error("Error al actualizar foto de perfil:", error);
     }
   };
@@ -106,7 +109,19 @@ function EditAvatarPopup({
               type="submit"
               disabled={isSubmitButtonDisabled}
             >
-              {statusEditPhoto ? "Guardando..." : "Guardar"}
+              <SwitchTransition>
+                <CSSTransition
+                  key={statusEditPhoto}
+                  nodeRef={statusRef}
+                  timeout={300}
+                  classNames="fade"
+                  unmountOnExit
+                >
+                  <div ref={statusRef}>
+                    {statusEditPhoto ? "Guardando..." : "Guardar"}
+                  </div>
+                </CSSTransition>
+              </SwitchTransition>
             </button>
           </fieldset>
         </form>

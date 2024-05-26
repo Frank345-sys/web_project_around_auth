@@ -1,4 +1,5 @@
 .card {
+  width: 100%;
   max-width: 280px;
   display: grid;
   grid-template-rows: 280px 80px;
@@ -15,15 +16,15 @@
 }
 
 .card:nth-child(3n-2) {
-  animation: fadeInCard 0.3s ease-in-out both;
+  animation: fadeInCard 0.4s ease-in-out both;
 }
 
 .card:nth-child(3n-1) {
-  animation: fadeInCard 0.5s ease-in-out both;
+  animation: fadeInCard 0.6s ease-in-out both;
 }
 
 .card:nth-child(3n) {
-  animation: fadeInCard 0.7s ease-in-out both;
+  animation: fadeInCard 0.8s ease-in-out both;
 }
 
 @keyframes fadeInCard {

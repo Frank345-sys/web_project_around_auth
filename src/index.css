@@ -131,7 +131,7 @@ code {
 
 /*elementos*/
 @import url(./blocks/content-footer-card/__title/content-footer-card__title.css);
-@import url(./blocks/content-footer-card/__likes/content-footer-card__likes.css);
+@import url(./blocks/content-footer-card/__content-button/content-footer-card__content-button.css);
 /*elementos*/
 
 /*bloque*/
@@ -140,7 +140,8 @@ code {
 
 /*elementos y modificadores*/
 @import url(./blocks/heart-button/__icon/heart-button__icon.css);
-@import url(./blocks/heart-button/__icon/_liked/heart-button__icon_liked.css);
+@import url(./blocks/heart-button/__likes/heart-button__likes.css);
+@import url(./blocks/heart-button/_liked/heart-button__icon_liked.css);
 /*elementos y modificadores*/
 
 /*bloque*/

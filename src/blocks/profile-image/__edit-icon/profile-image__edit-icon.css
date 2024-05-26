@@ -3,3 +3,15 @@
   position: absolute;
   transition: opacity 0.3s ease-in-out;
 }
+
+@media screen and (max-width: 768px) {
+  .profile-image__edit-icon {
+    opacity: 1;
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+  }
+  .profile-image__edit-icon img {
+    display: none;
+  }
+}

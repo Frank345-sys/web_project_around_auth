@@ -1,11 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import * as auth from "../utils/auth";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 function Register({ navigate, openModalError, openCorrectModal }) {
   const inputEmailRef = useRef(null);
   const inputPasswordRef = useRef(null);
   const inputConfirmPasswordRef = useRef(null);
+  const statusRef = useRef(null);
 
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
@@ -159,7 +161,19 @@ function Register({ navigate, openModalError, openCorrectModal }) {
               type="submit"
               disabled={isSubmitButtonDisabled}
             >
-              {statusRegister ? "Registrando..." : "Regístrate"}
+              <SwitchTransition>
+                <CSSTransition
+                  key={statusRegister}
+                  nodeRef={statusRef}
+                  timeout={300}
+                  classNames="fade"
+                  unmountOnExit
+                >
+                  <div ref={statusRef}>
+                    {statusRegister ? "Registrando..." : "Regístrate"}
+                  </div>
+                </CSSTransition>
+              </SwitchTransition>
             </button>
             <div className="link">
               <p className="link__title">¿Ya tienes una cuenta?</p>

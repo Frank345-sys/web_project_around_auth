@@ -1,29 +1,27 @@
 import vector_close_icon from "../images/vector_close_icon.png";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 function ImagePopup({ isOpen, onClose, nameCard, imageUrlCard }) {
+  const handleEscapeKeyPress = useRef((e) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  });
+
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
-  const handleEscapeKeyPress = (e) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  };
-
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKeyPress);
+      document.addEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKeyPress);
+    } else if (isOpen === false && document.body.style.overflow === "hidden") {
+      document.removeEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "auto";
-    };
+    }
   }, [isOpen]);
 
   return (
@@ -39,7 +37,7 @@ function ImagePopup({ isOpen, onClose, nameCard, imageUrlCard }) {
           className="pop-up-window__button-close"
           onClick={onClose}
         >
-          <img alt="icono cerrar pop-up image" src={vector_close_icon} />
+          <img alt="icono cerrar pop-up" src={vector_close_icon} />
         </button>
         <img
           src={imageUrlCard}

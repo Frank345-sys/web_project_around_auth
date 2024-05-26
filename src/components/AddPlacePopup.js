@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import vector_close_icon from "../images/vector_close_icon.png";
 
-function AddPlacePopup({ isOpen, onClose, formAddSubmit }) {
+function AddPlacePopup({ isOpen, onClose, openModalError, formAddSubmit }) {
   const inputNamePlaceRef = useRef(null);
   const inputUrlPlaceRef = useRef(null);
+  const statusRef = useRef(null);
+
   const [errorNamePlace, setErrorNamePlace] = useState(false);
   const [errorUrlPlace, setErrorUrlPlace] = useState(false);
+
   const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
 
   const [namePlace, setNamePlace] = useState("");
@@ -13,28 +17,26 @@ function AddPlacePopup({ isOpen, onClose, formAddSubmit }) {
 
   const [statusCreateCard, setStatusCreateCard] = useState(false);
 
+  const handleEscapeKeyPress = useRef((e) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  });
+
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
-  const handleEscapeKeyPress = (e) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  };
-
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKeyPress);
+      document.addEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKeyPress);
+    } else if (isOpen === false && document.body.style.overflow === "hidden") {
+      document.removeEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "auto";
-    };
+    }
   }, [isOpen]);
 
   const handleInputNamePlaceChange = (e) => {
@@ -63,7 +65,10 @@ function AddPlacePopup({ isOpen, onClose, formAddSubmit }) {
       setStatusCreateCard(false);
       onClose();
     } catch (error) {
-      console.error("Error al crear tarjeta:", error);
+      setStatusCreateCard(false);
+      onClose();
+      openModalError();
+      console.error("Error al crear la tarjeta:", error);
     }
   };
 
@@ -134,7 +139,19 @@ function AddPlacePopup({ isOpen, onClose, formAddSubmit }) {
               type="submit"
               disabled={isSubmitButtonDisabled}
             >
-              {statusCreateCard ? "Creando..." : "Crear"}
+              <SwitchTransition>
+                <CSSTransition
+                  key={statusCreateCard}
+                  nodeRef={statusRef}
+                  timeout={300}
+                  classNames="fade"
+                  unmountOnExit
+                >
+                  <div ref={statusRef}>
+                    {statusCreateCard ? "Creando..." : "Crear"}
+                  </div>
+                </CSSTransition>
+              </SwitchTransition>
             </button>
           </fieldset>
         </form>

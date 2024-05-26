@@ -1,4 +1,6 @@
 .card__button-delete {
+  height: 20px;
+  width: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,7 +13,7 @@
 }
 
 .card__button-delete img {
-  height: 19.3px;
-  width: 18px;
+  height: 100%;
+  width: 100%;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
 }

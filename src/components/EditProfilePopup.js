@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import vector_close_icon from "../images/vector_close_icon.png";
 
 function EditProfilePopup({
@@ -8,23 +9,25 @@ function EditProfilePopup({
   onAboutUser,
   isOpen,
   onClose,
+  openModalError,
   formEditSubmit,
 }) {
   const inputNameRef = useRef(null);
   const inputOccupationRef = useRef(null);
+  const statusRef = useRef(null);
+
   const [errorName, setErrorName] = useState(false);
   const [errorOccupation, setErrorOccupation] = useState(false);
   const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
-
   const [name, setName] = useState("");
   const [occupation, setOccupation] = useState("");
-
   const [statusEdit, setStatusEdit] = useState(false);
 
-  useEffect(() => {
-    setName(nameUser);
-    setOccupation(aboutUser);
-  }, [isOpen, nameUser, aboutUser]);
+  const handleEscapeKeyPress = useRef((e) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  });
 
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -32,22 +35,16 @@ function EditProfilePopup({
     }
   };
 
-  const handleEscapeKeyPress = (e) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  };
-
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKeyPress);
+      setName(nameUser);
+      setOccupation(aboutUser);
+      document.addEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKeyPress);
+    } else if (isOpen === false && document.body.style.overflow === "hidden") {
+      document.removeEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "auto";
-    };
+    }
   }, [isOpen]);
 
   useEffect(() => {
@@ -66,13 +63,14 @@ function EditProfilePopup({
     e.preventDefault();
     setStatusEdit(true);
     try {
-      await formEditSubmit(name, occupation).then((result) => {
-        setStatusEdit(false);
-        onClose();
-        onNameUser(result.name);
-        onAboutUser(result.about);
-      });
+      const result = await formEditSubmit(name, occupation);
+      setStatusEdit(false);
+      onClose();
+      onNameUser(result.name);
+      onAboutUser(result.about);
     } catch (error) {
+      onClose();
+      openModalError();
       console.error("Error al actualizar los datos del usuario :", error);
     }
   };
@@ -147,7 +145,19 @@ function EditProfilePopup({
               type="submit"
               disabled={isSubmitButtonDisabled}
             >
-              {statusEdit ? "Guardando..." : "Guardar"}
+              <SwitchTransition>
+                <CSSTransition
+                  key={statusEdit}
+                  nodeRef={statusRef}
+                  timeout={300}
+                  classNames="fade"
+                  unmountOnExit
+                >
+                  <div ref={statusRef}>
+                    {statusEdit ? "Guardando..." : "Guardar"}
+                  </div>
+                </CSSTransition>
+              </SwitchTransition>
             </button>
           </fieldset>
         </form>

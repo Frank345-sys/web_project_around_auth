@@ -1,29 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import vector_close_icon from "../images/vector_close_icon.png";
 
 function InfoTooltip({ isOpen, onClose, children }) {
+  const handleEscapeKeyPress = useRef((e) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  });
+
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
-  const handleEscapeKeyPress = (e) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  };
-
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKeyPress);
+      document.addEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKeyPress);
+    } else if (isOpen === false && document.body.style.overflow === "hidden") {
+      document.removeEventListener("keydown", handleEscapeKeyPress.current);
       document.body.style.overflow = "auto";
-    };
+    }
   }, [isOpen]);
 
   return (

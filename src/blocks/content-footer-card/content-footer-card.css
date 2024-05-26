@@ -1,7 +1,12 @@
 .content-footer-card {
+  height: fit-content;
+  width: fit-content;
   display: flex;
   position: relative;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 18px 31px 21px;
+  align-self: center;
+  justify-self: center;
+  /*
+  padding: 25px 18px 31px 21px;*/
 }
