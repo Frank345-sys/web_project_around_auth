@@ -19,13 +19,14 @@
 
 */
 .content-photos {
+  height: auto;
   width: 100%;
   max-width: 880px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   grid-gap: 16px;
-  border-radius: 10px;
+  z-index: 1;
 }
 
 /*

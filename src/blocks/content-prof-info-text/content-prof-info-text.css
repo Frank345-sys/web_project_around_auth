@@ -1,4 +1,5 @@
 .content-prof-info-text {
+  height: auto;
   width: 100%;
   max-width: 415px;
   display: flex;
