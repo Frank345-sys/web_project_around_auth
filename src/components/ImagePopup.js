@@ -1,7 +1,7 @@
 import vector_close_icon from "../images/vector_close_icon.png";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, memo } from "react";
 
-function ImagePopup({ isOpen, onClose, nameCard, imageUrlCard }) {
+const ImagePopup = memo(({ isOpen, onClose, nameCard, imageUrlCard }) => {
   const handleEscapeKeyPress = useRef((e) => {
     if (e.key === "Escape") {
       onClose();
@@ -47,6 +47,6 @@ function ImagePopup({ isOpen, onClose, nameCard, imageUrlCard }) {
       </div>
     </div>
   );
-}
+});
 
 export default ImagePopup;

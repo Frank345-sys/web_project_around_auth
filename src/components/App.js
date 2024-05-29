@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef, useRef } from "react";
+import React, { useState, useEffect, createRef, useCallback } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 import {
@@ -37,20 +37,20 @@ function App() {
   const [cards, setCards] = useState([]);
 
   //metodos para iniciar o cerrar la sesión
-  const isLogginTrue = () => setIsLoggedIn(true);
-  const isLoginFalse = () => setIsLoggedIn(false);
+  const isLogginTrue = useCallback(() => setIsLoggedIn(true), []);
+  const isLoginFalse = useCallback(() => setIsLoggedIn(false), []);
 
   //metodos para abrir o cerrar modal success
-  const openErrorModal = () => setIsErrorModalOpen(true);
-  const closeErrorModal = () => setIsErrorModalOpen(false);
+  const openErrorModal = useCallback(() => setIsErrorModalOpen(true), []);
+  const closeErrorModal = useCallback(() => setIsErrorModalOpen(false), []);
 
   //metodos para abrir o cerrar modal fail
-  const openCorrectModal = () => setIsCorrectModalOpen(true);
-  const closeCorrectModal = () => setIsCorrectModalOpen(false);
+  const openCorrectModal = useCallback(() => setIsCorrectModalOpen(true), []);
+  const closeCorrectModal = useCallback(() => setIsCorrectModalOpen(false), []);
 
   /* ////////////////////// check Token ////////////////////// */
 
-  const tokenCheck = useRef(async () => {
+  const tokenCheck = useCallback(async () => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       auth
@@ -69,24 +69,24 @@ function App() {
     } else {
       setIsLoadingPage(true);
     }
-  });
+  }, []);
 
   useEffect(() => {
-    tokenCheck.current();
+    tokenCheck();
   }, []);
 
   /* ////////////////////// check Token ////////////////////// */
 
   /* ////////////////////// currentUser ////////////////////// */
 
-  const fetchCurrentUser = async () => {
+  const fetchCurrentUser = useCallback(async () => {
     try {
       const result = await api.get("users/me");
       setCurrentUser(result);
     } catch (error) {
       console.error("Error al obtener los datos del usuario:", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -100,7 +100,7 @@ function App() {
 
   /* ////////////////////// fetch Cards ////////////////////// */
 
-  const fetchCards = async () => {
+  const fetchCards = useCallback(async () => {
     try {
       const result = await api.get("cards");
       setCards(result);
@@ -108,7 +108,7 @@ function App() {
     } catch (error) {
       console.error("Error al obtener las cards: ", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -122,22 +122,22 @@ function App() {
   /* ////////////////////// fetch Cards ////////////////////// */
 
   /* ///////////////////// Cerrar sesión ///////////////////// */
-  const handleSignOut = () => {
+  const handleSignOut = useCallback(() => {
     localStorage.removeItem("jwt");
     setEmail("");
     isLoginFalse();
-  };
+  }, []);
 
   /* ///////////////////// Editar Perfil ///////////////////// */
-  const handleFormEditProfileSubmit = (name, occupation) => {
+  const handleFormEditProfileSubmit = useCallback((name, occupation) => {
     return api.patch("users/me", {
       name: name,
       about: occupation,
     });
-  };
+  }, []);
 
   /* ////////////////////// Crear Card ////////////////////// */
-  const handleFormCreateCardSubmit = async (name, imageUrl) => {
+  const handleFormCreateCardSubmit = useCallback(async (name, imageUrl) => {
     try {
       const result = await api.post("cards", {
         name: name,
@@ -147,34 +147,34 @@ function App() {
     } catch (error) {
       throw error; // re-lanza el error para ser capturado en handleSubmit en AddPlacePopup
     }
-  };
+  }, []);
 
   /* //////////////////// Editar avatar //////////////////// */
-  const handleFormEditAvatarSubmit = (url) => {
+  const handleFormEditAvatarSubmit = useCallback((url) => {
     return api.patch("users/me/avatar", {
       avatar: url,
     });
-  };
+  }, []);
 
   /* //////////////////// Eliminar card //////////////////// */
-  const handleCardDelete = async (cardId) => {
+  const handleCardDelete = useCallback(async (cardId) => {
     try {
       await api.delete(`cards/${cardId}`);
-      setDeletedCard(!deletedCard);
+      setDeletedCard((prev) => !prev);
     } catch (error) {
       throw error; // re-lanza el error para ser capturado en handleConfirmDeleteSubmit en Main
     }
-  };
+  }, []);
 
   /* ///////////////////// Like card ////////////////////// */
-  const handleLikeCard = (idCard) => {
+  const handleLikeCard = useCallback((idCard) => {
     return api.put(`cards/likes/${idCard}`);
-  };
+  }, []);
 
   /* //////////////////// Dislike card //////////////////// */
-  const handleDislikeCard = (idCard) => {
+  const handleDislikeCard = useCallback((idCard) => {
     return api.delete(`cards/likes/${idCard}`);
-  };
+  }, []);
 
   const routes = [
     {

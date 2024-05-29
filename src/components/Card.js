@@ -16,16 +16,11 @@ function Card({
   //context
   const currentUser = useContext(CurrentUserContext);
 
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(
+    likes.some((element) => element._id === currentUser._id)
+  );
 
-  const [countLikes, setCountLikes] = useState(0);
-
-  useEffect(() => {
-    if (currentUser && currentUser) {
-      setIsLiked(likes.some((element) => element._id === currentUser._id));
-      setCountLikes(likes.length);
-    }
-  }, [currentUser]);
+  const [countLikes, setCountLikes] = useState(likes.length);
 
   const handleOpenPopUpImageClick = () => {
     onOpenPopUpImage(name, link);
@@ -55,16 +50,13 @@ function Card({
     }
   };
 
-  // className="card"
-  /* */
-
   return (
     <>
       <article className="card">
         <button
           type="button"
           className={`card__button-delete ${
-            (currentUser && currentUser._id) === user._id
+            currentUser._id === user._id
               ? ""
               : "card__button-delete_visibility_visible"
           }`}

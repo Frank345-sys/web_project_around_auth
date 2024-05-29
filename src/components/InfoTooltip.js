@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, memo } from "react";
 import vector_close_icon from "../images/vector_close_icon.png";
 
-function InfoTooltip({ isOpen, onClose, children }) {
+const InfoTooltip = memo(({ isOpen, onClose, children }) => {
   const handleEscapeKeyPress = useRef((e) => {
     if (e.key === "Escape") {
       onClose();
@@ -39,6 +39,6 @@ function InfoTooltip({ isOpen, onClose, children }) {
       </div>
     </div>
   );
-}
+});
 
 export default InfoTooltip;
