@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/web_project_around_auth/static/css/main.50ea271a.css",
-    "main.js": "/web_project_around_auth/static/js/main.9706a008.js",
+    "main.css": "/web_project_around_auth/static/css/main.28e60946.css",
+    "main.js": "/web_project_around_auth/static/js/main.11b3a8f4.js",
     "static/js/453.8d428687.chunk.js": "/web_project_around_auth/static/js/453.8d428687.chunk.js",
     "static/media/Inter-MediumItalic.woff?v=3.19": "/web_project_around_auth/static/media/Inter-MediumItalic.3d0107dd43d0101274d3.woff",
     "static/media/Inter-BlackItalic.woff?v=3.19": "/web_project_around_auth/static/media/Inter-BlackItalic.ca1e738e4f349f27514d.woff",
@@ -16,12 +16,12 @@
     "static/media/Inter-Black.woff2?v=3.19": "/web_project_around_auth/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
     "static/media/Inter-Regular.woff2?v=3.19": "/web_project_around_auth/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
     "index.html": "/web_project_around_auth/index.html",
-    "main.50ea271a.css.map": "/web_project_around_auth/static/css/main.50ea271a.css.map",
-    "main.9706a008.js.map": "/web_project_around_auth/static/js/main.9706a008.js.map",
+    "main.28e60946.css.map": "/web_project_around_auth/static/css/main.28e60946.css.map",
+    "main.11b3a8f4.js.map": "/web_project_around_auth/static/js/main.11b3a8f4.js.map",
     "453.8d428687.chunk.js.map": "/web_project_around_auth/static/js/453.8d428687.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.50ea271a.css",
-    "static/js/main.9706a008.js"
+    "static/css/main.28e60946.css",
+    "static/js/main.11b3a8f4.js"
   ]
 }
