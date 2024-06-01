@@ -12,8 +12,8 @@ import EditProfilePopup from "../components/EditProfilePopup";
 import AddPlacePopup from "../components/AddPlacePopup";
 import EditAvatarPopup from "../components/EditAvatarPopup";
 import ImagePopup from "../components/ImagePopup";
-import InfoTooltip from "../components/InfoTooltip";
 import Card from "../components/Card";
+import ConfirmDeleteCardPopup from "../components/ConfirmDeleteCardPopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import ReactLoading from "react-loading";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -33,7 +33,6 @@ function Main({
   const nameRef = useRef(null);
   const aboutRef = useRef(null);
   const avatarRef = useRef(null);
-  const statusRef = useRef(null);
 
   //user values
   const [name, setName] = useState("");
@@ -68,47 +67,78 @@ function Main({
   // LoadPageInfoUser
   const [isLoadInfoUser, setIsLoadInfoUser] = useState(false);
 
-  // idCard
-  const [isIdCard, setIsIdCard] = useState("");
-
   // card values
   const [isNameCard, setIsNameCard] = useState("");
   const [isLinkCard, setIsLinkCard] = useState("");
+  const [isIdCard, setIsIdCard] = useState("");
 
-  // modales
-  const [modalState, setModalState] = useState({
-    editProfileModal: false,
-    createCardModal: false,
-    editAvatarModal: false,
-    deleteCardModal: false,
-    popUpImage: false,
-  });
+  //Metodos para abrir o cerrar modal createCard
+  const [isCreateCardModal, setIsCreateCardModal] = useState(false);
 
-  const openModal = useCallback((modalName) => {
-    setModalState((prev) => ({ ...prev, [modalName]: true }));
+  const openModalCreateCard = useCallback(() => {
+    setIsCreateCardModal(true);
   }, []);
 
-  const closeModal = useCallback((modalName) => {
-    setModalState((prev) => ({ ...prev, [modalName]: false }));
+  const closeModalCreateCard = useCallback(() => {
+    setIsCreateCardModal(false);
   }, []);
+
+  //Metodos para abrir o cerrar editProfile
+  const [isEditProfileModal, setIsEditProfileModal] = useState(false);
+
+  const openModalEditProfile = useCallback(() => {
+    setIsEditProfileModal(true);
+  }, []);
+
+  const closeModalEditProfile = useCallback(() => {
+    setIsEditProfileModal(false);
+  }, []);
+
+  //Metodos para abrir o cerrar editAvatar
+  const [isEditAvatarModal, setIsEditAvatarModal] = useState(false);
+
+  const openModalEditAvatar = useCallback(() => {
+    setIsEditAvatarModal(true);
+  }, []);
+
+  const closeModalEditAvatar = useCallback(() => {
+    setIsEditAvatarModal(false);
+  }, []);
+
+  //Metodos para abrir o cerrar deleteCard
+  const [isDeleteCardModal, setIsDeleteCardModal] = useState(false);
 
   const openModalDeleteCard = useCallback((idCard) => {
-    openModal("deleteCardModal");
+    setIsDeleteCardModal(true);
     setIsIdCard(idCard);
   }, []);
 
   const closeModalDeleteCard = useCallback(() => {
-    closeModal("deleteCardModal");
+    setIsDeleteCardModal(false);
     setIsIdCard("");
   }, []);
 
-  // status button deleteCardModal
+  //Metodos para abrir o cerrar popUpImage
+  const [isPopupImage, setIsPopupImage] = useState(false);
+
+  const openPopUpImage = useCallback((name, link) => {
+    setIsNameCard(name);
+    setIsLinkCard(link);
+    setIsPopupImage(true);
+  }, []);
+
+  const closePopUpImage = useCallback(() => {
+    setIsPopupImage(false);
+  }, []);
+
+  /*
   const [status, setStatus] = useState(false);
+  const statusRef = useRef(null);
 
   const handleConfirmDeleteSubmit = useCallback(async () => {
     setStatus(true);
     try {
-      await onDeleteCard(isIdCard);
+      await onDeleteCard(isIdCard + 1);
       setStatus(false);
       closeModalDeleteCard();
     } catch (error) {
@@ -118,51 +148,7 @@ function Main({
     }
   }, [isIdCard]);
 
-  const openPopUpImage = useCallback((name, link) => {
-    setIsNameCard(name);
-    setIsLinkCard(link);
-    openModal("popUpImage");
-  }, []);
-
-  return (
-    <>
-      <EditProfilePopup
-        nameUser={name}
-        onNameUser={setNewName}
-        aboutUser={about}
-        onAboutUser={setNewAbout}
-        isOpen={modalState.editProfileModal}
-        onClose={() => closeModal("editProfileModal")}
-        openModalError={openModalError}
-        formEditSubmit={onEditProfile}
-      ></EditProfilePopup>
-
-      <AddPlacePopup
-        isOpen={modalState.createCardModal}
-        onClose={() => closeModal("createCardModal")}
-        openModalError={openModalError}
-        formAddSubmit={onAddPlace}
-      ></AddPlacePopup>
-
-      <EditAvatarPopup
-        onAvatarUser={setNewAvatar}
-        isOpen={modalState.editAvatarModal}
-        onClose={() => closeModal("editAvatarModal")}
-        openModalError={openModalError}
-        formEditAvatarSubmit={onEditAvatar}
-      ></EditAvatarPopup>
-
-      <ImagePopup
-        isOpen={modalState.popUpImage}
-        onClose={() => closeModal("popUpImage")}
-        nameCard={isNameCard}
-        imageUrlCard={isLinkCard}
-      ></ImagePopup>
-
-      <InfoTooltip
-        isOpen={modalState.deleteCardModal}
-        onClose={() => closeModal("deleteCardModal")}
-      >
+  <InfoTooltip isOpen={isDeleteCardModal} onClose={closeModalDeleteCard}>
         <h2 className="modal__title">¿Estás segudo/a?</h2>
         <form
           className="modal-form"
@@ -192,6 +178,50 @@ function Main({
         </form>
       </InfoTooltip>
 
+*/
+  return (
+    <>
+      <EditProfilePopup
+        nameUser={name}
+        onNameUser={setNewName}
+        aboutUser={about}
+        onAboutUser={setNewAbout}
+        isOpen={isEditProfileModal}
+        onClose={closeModalEditProfile}
+        openModalError={openModalError}
+        formEditSubmit={onEditProfile}
+      ></EditProfilePopup>
+
+      <AddPlacePopup
+        isOpen={isCreateCardModal}
+        onClose={closeModalCreateCard}
+        openModalError={openModalError}
+        formAddSubmit={onAddPlace}
+      ></AddPlacePopup>
+
+      <EditAvatarPopup
+        onAvatarUser={setNewAvatar}
+        isOpen={isEditAvatarModal}
+        onClose={closeModalEditAvatar}
+        openModalError={openModalError}
+        formEditAvatarSubmit={onEditAvatar}
+      ></EditAvatarPopup>
+
+      <ImagePopup
+        isOpen={isPopupImage}
+        onClose={closePopUpImage}
+        nameCard={isNameCard}
+        imageUrlCard={isLinkCard}
+      ></ImagePopup>
+
+      <ConfirmDeleteCardPopup
+        isOpen={isDeleteCardModal}
+        onClose={closeModalDeleteCard}
+        idCard={isIdCard}
+        onDeleteCard={onDeleteCard}
+        openModalError={openModalError}
+      ></ConfirmDeleteCardPopup>
+
       <main className="content">
         <section className="profile">
           <div className="content-profile">
@@ -220,7 +250,7 @@ function Main({
 
                     <div
                       className="profile-image__edit-icon"
-                      onClick={() => openModal("editAvatarModal")}
+                      onClick={openModalEditAvatar}
                     >
                       <img src={vector_edit_icon} alt="Editar" />
                     </div>
@@ -249,7 +279,7 @@ function Main({
                 <button
                   type="button"
                   className="content-prof-info-text__edit-button"
-                  onClick={() => openModal("editProfileModal")}
+                  onClick={openModalEditProfile}
                 >
                   <img alt="icono editar" src={vector_edit_icon} />
                 </button>
@@ -276,7 +306,7 @@ function Main({
             <button
               type="button"
               className="content-profile__add-button"
-              onClick={() => openModal("createCardModal")}
+              onClick={openModalCreateCard}
             >
               <img alt="icono agregar" src={vector_add_icon} />
             </button>

@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, memo } from "react";
+import React, { useEffect, memo } from "react";
 import vector_close_icon from "../images/vector_close_icon.png";
 
-const InfoTooltip = memo(({ isOpen, onClose, children }) => {
-  const handleEscapeKeyPress = useRef((e) => {
+const InfoTooltip = memo(({ isOpen, onClose, src, title }) => {
+  const handleEscapeKeyPress = (e) => {
     if (e.key === "Escape") {
       onClose();
     }
-  });
+  };
 
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -16,12 +16,14 @@ const InfoTooltip = memo(({ isOpen, onClose, children }) => {
 
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKeyPress.current);
+      document.addEventListener("keydown", handleEscapeKeyPress);
       document.body.style.overflow = "hidden";
-    } else if (isOpen === false && document.body.style.overflow === "hidden") {
-      document.removeEventListener("keydown", handleEscapeKeyPress.current);
-      document.body.style.overflow = "auto";
     }
+    // Se limpia el evento cuando se ejecuta useEffect o cuando se desmonta el componente
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKeyPress);
+      document.body.style.overflow = "auto";
+    };
   }, [isOpen]);
 
   return (
@@ -35,7 +37,8 @@ const InfoTooltip = memo(({ isOpen, onClose, children }) => {
         <button onClick={onClose} type="button" className="modal__button-close">
           <img alt="icono cerrar modal" src={vector_close_icon} />
         </button>
-        {children}
+        <img className="modal__icon" src={src} alt="ilustración status"></img>
+        <h2 className="modal__title modal__title_aling-self-center">{title}</h2>
       </div>
     </div>
   );

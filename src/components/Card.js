@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import vector_delete_icon from "../images/vector_delete_icon.png";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 

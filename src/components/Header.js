@@ -1,7 +1,7 @@
 import logo_header from "../images/logo/logo.png";
 import btn_nav_bar_mb from "../images/btn-nav-bar-m.png";
 import vector_close_icon from "../images/vector_close_icon.png";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 function Header({ isLoggin, isSingOut, navigate, email }) {

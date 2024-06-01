@@ -12,6 +12,41 @@ const EditAvatarPopup = memo(
     const [errorUrlAvatar, setErrorUrlAvatar] = useState(false);
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
 
+    const handleEscapeKeyPress = (e) => {
+      if (e.key === "Escape" && statusEditPhoto === false) {
+        onClose();
+      }
+    };
+
+    const handleOutsideClick = (e) => {
+      if (e.target === e.currentTarget && statusEditPhoto === false) {
+        onClose();
+      }
+    };
+
+    useEffect(() => {
+      if (isOpen) {
+        setUrlAvatar("");
+      } else {
+        setErrorUrlAvatar(false);
+        setIsSubmitButtonDisabled(true);
+      }
+    }, [isOpen]);
+
+    useEffect(() => {
+      if (isOpen) {
+        document.addEventListener("keydown", handleEscapeKeyPress);
+        document.body.style.overflow = "hidden";
+      }
+      // Se limpia el evento cuando se ejecuta useEffect o cuando se desmonta el componente
+      return () => {
+        document.removeEventListener("keydown", handleEscapeKeyPress);
+        document.body.style.overflow = "auto";
+      };
+    }, [isOpen, statusEditPhoto]);
+
+    /*
+
     const handleOutsideClick = (e) => {
       if (e.target === e.currentTarget) {
         onClose();
@@ -39,6 +74,7 @@ const EditAvatarPopup = memo(
         setIsSubmitButtonDisabled(true);
       }
     }, [isOpen]);
+    */
 
     const handleAvatarChange = (e) => {
       setErrorUrlAvatar(!inputUrlAvatarRef.current.validity.valid);
@@ -50,11 +86,12 @@ const EditAvatarPopup = memo(
       e.preventDefault();
       setStatusEditPhoto(true);
       try {
-        const result = await formEditAvatarSubmit(urlAvatar);
         setStatusEditPhoto(false);
+        const result = await formEditAvatarSubmit(urlAvatar);
         onClose();
         onAvatarUser(result.avatar);
       } catch (error) {
+        setStatusEditPhoto(false);
         onClose();
         openModalError();
         console.error("Error al actualizar foto de perfil:", error);
@@ -70,7 +107,11 @@ const EditAvatarPopup = memo(
       >
         <div className="modal">
           <button
-            onClick={onClose}
+            onClick={() => {
+              if (statusEditPhoto === false) {
+                onClose();
+              }
+            }}
             type="button"
             className="modal__button-close"
           >

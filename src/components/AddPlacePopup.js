@@ -18,30 +18,44 @@ const AddPlacePopup = memo(
 
     const [statusCreateCard, setStatusCreateCard] = useState(false);
 
-    const handleEscapeKeyPress = useRef((e) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    });
-
-    const handleOutsideClick = (e) => {
-      if (e.target === e.currentTarget) {
+    const handleEscapeKeyPress = (e) => {
+      if (e.key === "Escape" && statusCreateCard === false) {
         onClose();
       }
     };
 
+    const handleOutsideClick = (e) => {
+      if (e.target === e.currentTarget && statusCreateCard === false) {
+        onClose();
+      }
+    };
+
+    /*
     useEffect(() => {
       if (isOpen) {
-        document.addEventListener("keydown", handleEscapeKeyPress.current);
+        document.addEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "hidden";
       } else if (
         isOpen === false &&
         document.body.style.overflow === "hidden"
       ) {
-        document.removeEventListener("keydown", handleEscapeKeyPress.current);
+        document.removeEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "auto";
       }
-    }, [isOpen]);
+    }, [statusCreateCard]);
+    */
+
+    useEffect(() => {
+      if (isOpen) {
+        document.addEventListener("keydown", handleEscapeKeyPress);
+        document.body.style.overflow = "hidden";
+      }
+      // Se limpia el evento cuando se ejecuta useEffect o cuando se desmonta el componente
+      return () => {
+        document.removeEventListener("keydown", handleEscapeKeyPress);
+        document.body.style.overflow = "auto";
+      };
+    }, [isOpen, statusCreateCard]);
 
     const handleInputNamePlaceChange = (e) => {
       setErrorNamePlace(!inputNamePlaceRef.current.validity.valid);
@@ -65,8 +79,8 @@ const AddPlacePopup = memo(
       e.preventDefault();
       setStatusCreateCard(true);
       try {
-        await formAddSubmit(namePlace, urlPlace);
         setStatusCreateCard(false);
+        await formAddSubmit(namePlace, urlPlace);
         onClose();
       } catch (error) {
         setStatusCreateCard(false);
@@ -85,7 +99,11 @@ const AddPlacePopup = memo(
       >
         <div className="modal">
           <button
-            onClick={onClose}
+            onClick={() => {
+              if (statusCreateCard === false) {
+                onClose();
+              }
+            }}
             type="button"
             className="modal__button-close"
           >

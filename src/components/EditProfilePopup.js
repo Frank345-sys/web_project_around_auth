@@ -24,6 +24,39 @@ const EditProfilePopup = memo(
     const [occupation, setOccupation] = useState("");
     const [statusEdit, setStatusEdit] = useState(false);
 
+    const handleEscapeKeyPress = (e) => {
+      if (e.key === "Escape" && statusEdit === false) {
+        onClose();
+      }
+    };
+
+    const handleOutsideClick = (e) => {
+      if (e.target === e.currentTarget && statusEdit === false) {
+        onClose();
+      }
+    };
+
+    useEffect(() => {
+      if (isOpen) {
+        setName(nameUser);
+        setOccupation(aboutUser);
+        setIsSubmitButtonDisabled(true);
+      }
+    }, [isOpen]);
+
+    useEffect(() => {
+      if (isOpen) {
+        document.addEventListener("keydown", handleEscapeKeyPress);
+        document.body.style.overflow = "hidden";
+      }
+      // Se limpia el evento cuando se ejecuta useEffect o cuando se desmonta el componente
+      return () => {
+        document.removeEventListener("keydown", handleEscapeKeyPress);
+        document.body.style.overflow = "auto";
+      };
+    }, [isOpen, statusEdit]);
+
+    /*
     const handleEscapeKeyPress = useRef((e) => {
       if (e.key === "Escape") {
         onClose();
@@ -51,7 +84,7 @@ const EditProfilePopup = memo(
         document.body.style.overflow = "auto";
       }
     }, [isOpen]);
-
+  */
     /*
   useEffect(() => {
     setErrorName(!inputNameRef.current.validity.valid);
@@ -89,12 +122,13 @@ const EditProfilePopup = memo(
       e.preventDefault();
       setStatusEdit(true);
       try {
-        const result = await formEditSubmit(name, occupation);
         setStatusEdit(false);
+        const result = await formEditSubmit(name, occupation);
         onClose();
         onNameUser(result.name);
         onAboutUser(result.about);
       } catch (error) {
+        setStatusEdit(false);
         onClose();
         openModalError();
         console.error("Error al actualizar los datos del usuario :", error);
@@ -110,7 +144,11 @@ const EditProfilePopup = memo(
       >
         <div className="modal">
           <button
-            onClick={onClose}
+            onClick={() => {
+              if (statusEdit === false) {
+                onClose();
+              }
+            }}
             type="button"
             className="modal__button-close"
           >

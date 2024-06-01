@@ -1,12 +1,12 @@
 import vector_close_icon from "../images/vector_close_icon.png";
-import React, { useEffect, useRef, memo } from "react";
+import React, { useEffect, memo } from "react";
 
 const ImagePopup = memo(({ isOpen, onClose, nameCard, imageUrlCard }) => {
-  const handleEscapeKeyPress = useRef((e) => {
+  const handleEscapeKeyPress = (e) => {
     if (e.key === "Escape") {
       onClose();
     }
-  });
+  };
 
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -16,12 +16,14 @@ const ImagePopup = memo(({ isOpen, onClose, nameCard, imageUrlCard }) => {
 
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKeyPress.current);
+      document.addEventListener("keydown", handleEscapeKeyPress);
       document.body.style.overflow = "hidden";
-    } else if (isOpen === false && document.body.style.overflow === "hidden") {
-      document.removeEventListener("keydown", handleEscapeKeyPress.current);
-      document.body.style.overflow = "auto";
     }
+    // Se limpia el evento cuando se ejecuta useEffect o cuando se desmonta el componente
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKeyPress);
+      document.body.style.overflow = "auto";
+    };
   }, [isOpen]);
 
   return (

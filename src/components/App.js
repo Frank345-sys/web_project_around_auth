@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 import {
@@ -17,7 +17,7 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import InfoTooltip from "../components/InfoTooltip";
 import vector_error_icon from "../images/vector_icon_error.png";
-import vector_correct_icon from "../images/vector_icon_correct.png";
+import vector_success_icon from "../images/vector_icon_success.png";
 import ReactLoading from "react-loading";
 import * as auth from "../utils/auth";
 
@@ -30,7 +30,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoadingPage, setIsLoadingPage] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [isCorrectModalOpen, setIsCorrectModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoadCards, setIsLoadCards] = useState(false);
   const [deletedCard, setDeletedCard] = useState(false);
@@ -40,13 +40,17 @@ function App() {
   const isLogginTrue = useCallback(() => setIsLoggedIn(true), []);
   const isLoginFalse = useCallback(() => setIsLoggedIn(false), []);
 
+  //manejo de modales
   //metodos para abrir o cerrar modal success
   const openErrorModal = useCallback(() => setIsErrorModalOpen(true), []);
   const closeErrorModal = useCallback(() => setIsErrorModalOpen(false), []);
 
   //metodos para abrir o cerrar modal fail
-  const openCorrectModal = useCallback(() => setIsCorrectModalOpen(true), []);
-  const closeCorrectModal = useCallback(() => setIsCorrectModalOpen(false), []);
+  const openSuccessModal = useCallback(() => setIsSuccessModalOpen(true), []);
+  const closeSuccessModal = useCallback(() => setIsSuccessModalOpen(false), []);
+
+  //useRefs
+  const contentRoutesRef = useRef(null);
 
   /* ////////////////////// check Token ////////////////////// */
 
@@ -176,57 +180,6 @@ function App() {
     return api.delete(`cards/likes/${idCard}`);
   }, []);
 
-  const routes = [
-    {
-      path: "/login",
-      name: "Login",
-      element: (
-        <Login
-          navigate={navigate}
-          logginTrue={isLogginTrue}
-          openModalError={openErrorModal}
-          setEmailUser={setEmail}
-        />
-      ),
-      nodeRef: createRef(),
-    },
-    {
-      path: "/register",
-      name: "Register",
-      element: (
-        <Register
-          navigate={navigate}
-          openModalError={openErrorModal}
-          openCorrectModal={openCorrectModal}
-        />
-      ),
-      nodeRef: createRef(),
-    },
-    {
-      path: "/main",
-      name: "Main",
-      element: (
-        <ProtectedRoute
-          loggedIn={isLoggedIn}
-          component={Main}
-          onEditProfile={handleFormEditProfileSubmit}
-          onEditAvatar={handleFormEditAvatarSubmit}
-          onAddPlace={handleFormCreateCardSubmit}
-          onDeleteCard={handleCardDelete}
-          onLikeCard={handleLikeCard}
-          onDisLikeCard={handleDislikeCard}
-          openModalError={openErrorModal}
-          isLoadCards={isLoadCards}
-          cards={cards}
-        />
-      ),
-      nodeRef: createRef(),
-    },
-  ];
-
-  const { nodeRef } =
-    routes.find((route) => route.path === location.pathname) ?? {};
-
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
@@ -237,44 +190,72 @@ function App() {
           email={email}
         />
 
-        <InfoTooltip isOpen={isErrorModalOpen} onClose={closeErrorModal}>
-          <img
-            className="modal__icon"
-            src={vector_error_icon}
-            alt="ilustración fail"
-          ></img>
-          <h2 className="modal__title modal__title_aling-self-center">
-            Uy, algo salió mal. Por favor, inténtalo de nuevo.
-          </h2>
-        </InfoTooltip>
+        <InfoTooltip
+          isOpen={isErrorModalOpen}
+          onClose={closeErrorModal}
+          src={vector_error_icon}
+          title={"Uy, algo salió mal. Por favor, inténtalo de nuevo."}
+        ></InfoTooltip>
 
         {isLoggedIn === false && (
-          <InfoTooltip isOpen={isCorrectModalOpen} onClose={closeCorrectModal}>
-            <img
-              className="modal__icon"
-              src={vector_correct_icon}
-              alt="ilustración success"
-            ></img>
-            <h2 className="modal__title modal__title_aling-self-center">
-              ¡Correcto! Ya estás registrado.
-            </h2>
-          </InfoTooltip>
+          <InfoTooltip
+            isOpen={isSuccessModalOpen}
+            onClose={closeSuccessModal}
+            src={vector_success_icon}
+            title={"¡Correcto! Ya estás registrado."}
+          ></InfoTooltip>
         )}
 
         {isLoadingPage ? (
           <SwitchTransition>
             <CSSTransition
               key={location.pathname}
-              nodeRef={nodeRef}
+              nodeRef={contentRoutesRef}
               timeout={300}
               classNames="fade"
               unmountOnExit
             >
-              <div ref={nodeRef}>
+              <div ref={contentRoutesRef}>
                 <Routes location={location}>
-                  {routes.map(({ path, element }) => (
-                    <Route key={path} path={path} element={element} />
-                  ))}
+                  <Route
+                    path="/login"
+                    element={
+                      <Login
+                        navigate={navigate}
+                        logginTrue={isLogginTrue}
+                        openModalError={openErrorModal}
+                        setEmailUser={setEmail}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <Register
+                        navigate={navigate}
+                        openModalError={openErrorModal}
+                        openSuccessModal={openSuccessModal}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/main"
+                    element={
+                      <ProtectedRoute
+                        loggedIn={isLoggedIn}
+                        component={Main}
+                        onEditProfile={handleFormEditProfileSubmit}
+                        onEditAvatar={handleFormEditAvatarSubmit}
+                        onAddPlace={handleFormCreateCardSubmit}
+                        onDeleteCard={handleCardDelete}
+                        onLikeCard={handleLikeCard}
+                        onDisLikeCard={handleDislikeCard}
+                        openModalError={openErrorModal}
+                        isLoadCards={isLoadCards}
+                        cards={cards}
+                      ></ProtectedRoute>
+                    }
+                  />
                   <Route path="*" element={<Navigate to="/login" />} />
                 </Routes>
               </div>
