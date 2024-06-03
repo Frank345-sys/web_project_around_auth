@@ -12,12 +12,6 @@ const EditAvatarPopup = memo(
     const [errorUrlAvatar, setErrorUrlAvatar] = useState(false);
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
 
-    const handleEscapeKeyPress = (e) => {
-      if (e.key === "Escape" && statusEditPhoto === false) {
-        onClose();
-      }
-    };
-
     const handleOutsideClick = (e) => {
       if (e.target === e.currentTarget && statusEditPhoto === false) {
         onClose();
@@ -34,6 +28,12 @@ const EditAvatarPopup = memo(
     }, [isOpen]);
 
     useEffect(() => {
+      const handleEscapeKeyPress = (e) => {
+        if (e.key === "Escape" && statusEditPhoto === false) {
+          onClose();
+        }
+      };
+
       if (isOpen) {
         document.addEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "hidden";
@@ -86,8 +86,8 @@ const EditAvatarPopup = memo(
       e.preventDefault();
       setStatusEditPhoto(true);
       try {
-        setStatusEditPhoto(false);
         const result = await formEditAvatarSubmit(urlAvatar);
+        setStatusEditPhoto(false);
         onClose();
         onAvatarUser(result.avatar);
       } catch (error) {

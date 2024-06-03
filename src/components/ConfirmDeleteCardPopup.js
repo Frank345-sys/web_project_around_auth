@@ -7,12 +7,6 @@ const ConfirmDeleteCardPopup = memo(
     const statusRef = useRef(null);
     const [status, setStatus] = useState(false);
 
-    const handleEscapeKeyPress = (e) => {
-      if (e.key === "Escape" && status === false) {
-        onClose();
-      }
-    };
-
     const handleOutsideClick = (e) => {
       if (e.target === e.currentTarget && status === false) {
         onClose();
@@ -20,6 +14,12 @@ const ConfirmDeleteCardPopup = memo(
     };
 
     useEffect(() => {
+      const handleEscapeKeyPress = (e) => {
+        if (e.key === "Escape" && status === false) {
+          onClose();
+        }
+      };
+
       if (isOpen) {
         document.addEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "hidden";
@@ -35,8 +35,8 @@ const ConfirmDeleteCardPopup = memo(
       e.preventDefault();
       setStatus(true);
       try {
-        setStatus(false);
         await onDeleteCard(idCard);
+        setStatus(false);
         onClose();
       } catch (error) {
         setStatus(false);

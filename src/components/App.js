@@ -28,7 +28,7 @@ function App() {
   //useState
   const [email, setEmail] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoadingPage, setIsLoadingPage] = useState(false);
+  //const [isLoadingPage, setIsLoadingPage] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
@@ -64,14 +64,14 @@ function App() {
             isLogginTrue();
             navigate("/main");
             setEmail(res.data.email);
-            setIsLoadingPage(true);
+            //setIsLoadingPage(true);
           }
         })
         .catch((err) => {
           console.error("Error al obtener el token: " + err);
         });
     } else {
-      setIsLoadingPage(true);
+      //setIsLoadingPage(true);
     }
   }, []);
 
@@ -266,6 +266,7 @@ function App() {
             <ReactLoading type={"bubbles"} color="#f4f4f4" />
           </div>
         )}
+
         <Footer />
       </CurrentUserContext.Provider>
     </div>

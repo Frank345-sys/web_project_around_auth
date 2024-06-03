@@ -24,12 +24,6 @@ const EditProfilePopup = memo(
     const [occupation, setOccupation] = useState("");
     const [statusEdit, setStatusEdit] = useState(false);
 
-    const handleEscapeKeyPress = (e) => {
-      if (e.key === "Escape" && statusEdit === false) {
-        onClose();
-      }
-    };
-
     const handleOutsideClick = (e) => {
       if (e.target === e.currentTarget && statusEdit === false) {
         onClose();
@@ -45,6 +39,12 @@ const EditProfilePopup = memo(
     }, [isOpen]);
 
     useEffect(() => {
+      const handleEscapeKeyPress = (e) => {
+        if (e.key === "Escape" && statusEdit === false) {
+          onClose();
+        }
+      };
+
       if (isOpen) {
         document.addEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "hidden";
@@ -122,8 +122,8 @@ const EditProfilePopup = memo(
       e.preventDefault();
       setStatusEdit(true);
       try {
-        setStatusEdit(false);
         const result = await formEditSubmit(name, occupation);
+        setStatusEdit(false);
         onClose();
         onNameUser(result.name);
         onAboutUser(result.about);

@@ -18,12 +18,6 @@ const AddPlacePopup = memo(
 
     const [statusCreateCard, setStatusCreateCard] = useState(false);
 
-    const handleEscapeKeyPress = (e) => {
-      if (e.key === "Escape" && statusCreateCard === false) {
-        onClose();
-      }
-    };
-
     const handleOutsideClick = (e) => {
       if (e.target === e.currentTarget && statusCreateCard === false) {
         onClose();
@@ -46,6 +40,12 @@ const AddPlacePopup = memo(
     */
 
     useEffect(() => {
+      const handleEscapeKeyPress = (e) => {
+        if (e.key === "Escape" && statusCreateCard === false) {
+          onClose();
+        }
+      };
+
       if (isOpen) {
         document.addEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "hidden";
@@ -79,8 +79,8 @@ const AddPlacePopup = memo(
       e.preventDefault();
       setStatusCreateCard(true);
       try {
-        setStatusCreateCard(false);
         await formAddSubmit(namePlace, urlPlace);
+        setStatusCreateCard(false);
         onClose();
       } catch (error) {
         setStatusCreateCard(false);
