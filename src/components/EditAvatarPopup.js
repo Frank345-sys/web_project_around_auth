@@ -45,37 +45,6 @@ const EditAvatarPopup = memo(
       };
     }, [isOpen, statusEditPhoto]);
 
-    /*
-
-    const handleOutsideClick = (e) => {
-      if (e.target === e.currentTarget) {
-        onClose();
-      }
-    };
-
-    const handleEscapeKeyPress = useRef((e) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    });
-
-    useEffect(() => {
-      if (isOpen) {
-        document.addEventListener("keydown", handleEscapeKeyPress.current);
-        document.body.style.overflow = "hidden";
-        setUrlAvatar("");
-      } else if (
-        isOpen === false &&
-        document.body.style.overflow === "hidden"
-      ) {
-        document.removeEventListener("keydown", handleEscapeKeyPress.current);
-        document.body.style.overflow = "auto";
-        setErrorUrlAvatar(false);
-        setIsSubmitButtonDisabled(true);
-      }
-    }, [isOpen]);
-    */
-
     const handleAvatarChange = (e) => {
       setErrorUrlAvatar(!inputUrlAvatarRef.current.validity.valid);
       setIsSubmitButtonDisabled(!inputUrlAvatarRef.current.validity.valid);

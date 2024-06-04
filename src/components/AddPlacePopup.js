@@ -24,21 +24,6 @@ const AddPlacePopup = memo(
       }
     };
 
-    /*
-    useEffect(() => {
-      if (isOpen) {
-        document.addEventListener("keydown", handleEscapeKeyPress);
-        document.body.style.overflow = "hidden";
-      } else if (
-        isOpen === false &&
-        document.body.style.overflow === "hidden"
-      ) {
-        document.removeEventListener("keydown", handleEscapeKeyPress);
-        document.body.style.overflow = "auto";
-      }
-    }, [statusCreateCard]);
-    */
-
     useEffect(() => {
       const handleEscapeKeyPress = (e) => {
         if (e.key === "Escape" && statusCreateCard === false) {

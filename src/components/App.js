@@ -188,7 +188,7 @@ function App() {
           isSingOut={handleSignOut}
           navigate={navigate}
           email={email}
-        />
+        ></Header>
 
         <InfoTooltip
           isOpen={isErrorModalOpen}

@@ -131,54 +131,6 @@ function Main({
     setIsPopupImage(false);
   }, []);
 
-  /*
-  const [status, setStatus] = useState(false);
-  const statusRef = useRef(null);
-
-  const handleConfirmDeleteSubmit = useCallback(async () => {
-    setStatus(true);
-    try {
-      await onDeleteCard(isIdCard + 1);
-      setStatus(false);
-      closeModalDeleteCard();
-    } catch (error) {
-      closeModalDeleteCard();
-      openModalError();
-      setStatus(false);
-    }
-  }, [isIdCard]);
-
-  <InfoTooltip isOpen={isDeleteCardModal} onClose={closeModalDeleteCard}>
-        <h2 className="modal__title">¿Estás segudo/a?</h2>
-        <form
-          className="modal-form"
-          noValidate
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleConfirmDeleteSubmit();
-          }}
-        >
-          <fieldset className="modal-form__set">
-            <button className="button button_delete-card" type="submit">
-              <SwitchTransition>
-                <CSSTransition
-                  key={status}
-                  nodeRef={statusRef}
-                  timeout={300}
-                  classNames="fade"
-                  unmountOnExit
-                >
-                  <div ref={statusRef}>
-                    {status ? "Eliminando..." : "Elimiar"}
-                  </div>
-                </CSSTransition>
-              </SwitchTransition>
-            </button>
-          </fieldset>
-        </form>
-      </InfoTooltip>
-
-*/
   return (
     <>
       <EditProfilePopup

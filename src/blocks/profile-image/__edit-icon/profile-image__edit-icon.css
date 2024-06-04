@@ -10,6 +10,13 @@
   height: 100%;
   width: 100%;
   cursor: pointer;
+  filter: drop-shadow(0 0 6px transparent);
+  transition: all 0.3s;
+}
+
+.profile-image__edit-icon img:hover {
+  filter: drop-shadow(0 0 6px #ffffd0);
+  transition: all 0.3s;
 }
 
 @media screen and (max-width: 768px) {
