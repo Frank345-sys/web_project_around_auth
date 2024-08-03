@@ -2,8 +2,10 @@ import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import * as auth from "../utils/auth";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import vector_error_icon from "../images/vector_icon_error.png";
+import vector_success_icon from "../images/vector_icon_success.png";
 
-function Register({ navigate, openModalError, openCorrectModal }) {
+function Register({ navigate, openModalInfoTooltip }) {
   const inputEmailRef = useRef(null);
   const inputPasswordRef = useRef(null);
   const inputConfirmPasswordRef = useRef(null);
@@ -31,15 +33,27 @@ function Register({ navigate, openModalError, openCorrectModal }) {
         .register(values.passwordUser, values.emailUser)
         .then(() => {
           setStatusRegister(false);
-          openCorrectModal();
+          //openCorrectModal();
+          openModalInfoTooltip(
+            "¡Correcto! Ya estás registrado.",
+            vector_success_icon
+          );
           navigate("/login");
         })
         .catch(() => {
           setStatusRegister(false);
-          openModalError();
+          //openModalError();
+          openModalInfoTooltip(
+            "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+            vector_error_icon
+          );
         });
     } else {
-      openModalError();
+      //openModalError();
+      openModalInfoTooltip(
+        "Uy, algo salió mal. Las contraseñas no coinciden",
+        vector_error_icon
+      );
     }
   };
 

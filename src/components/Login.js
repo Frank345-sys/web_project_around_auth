@@ -2,8 +2,10 @@ import React, { useState, useRef } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { Link } from "react-router-dom";
 import * as auth from "../utils/auth";
+import vector_error_icon from "../images/vector_icon_error.png";
+import vector_success_icon from "../images/vector_icon_success.png";
 
-function Login({ navigate, logginTrue, openModalError, setEmailUser }) {
+function Login({ navigate, logginTrue, openModalInfoTooltip, setEmailUser }) {
   const inputEmailRef = useRef(null);
   const inputPasswordRef = useRef(null);
   const statusRef = useRef(null);
@@ -26,6 +28,10 @@ function Login({ navigate, logginTrue, openModalError, setEmailUser }) {
     auth
       .authorize(values.passwordUser, values.emailUser)
       .then(() => {
+        openModalInfoTooltip(
+          "¡Correcto! Sesión iniciada.",
+          vector_success_icon
+        );
         setStatusLogin(false);
         setEmailUser(values.emailUser);
         logginTrue();
@@ -33,7 +39,11 @@ function Login({ navigate, logginTrue, openModalError, setEmailUser }) {
       })
       .catch(() => {
         setStatusLogin(false);
-        openModalError();
+        //openModalError();
+        openModalInfoTooltip(
+          "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+          vector_error_icon
+        );
       });
   };
 

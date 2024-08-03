@@ -2,12 +2,6 @@ import vector_close_icon from "../images/vector_close_icon.png";
 import React, { useEffect, memo } from "react";
 
 const ImagePopup = memo(({ isOpen, onClose, nameCard, imageUrlCard }) => {
-  const handleEscapeKeyPress = (e) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  };
-
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -15,6 +9,12 @@ const ImagePopup = memo(({ isOpen, onClose, nameCard, imageUrlCard }) => {
   };
 
   useEffect(() => {
+    const handleEscapeKeyPress = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
     if (isOpen) {
       document.addEventListener("keydown", handleEscapeKeyPress);
       document.body.style.overflow = "hidden";
@@ -24,7 +24,7 @@ const ImagePopup = memo(({ isOpen, onClose, nameCard, imageUrlCard }) => {
       document.removeEventListener("keydown", handleEscapeKeyPress);
       document.body.style.overflow = "auto";
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   return (
     <div

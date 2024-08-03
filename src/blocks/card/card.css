@@ -11,17 +11,36 @@
   transition: all 0.3s;
 }
 
+/*
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s;
+  opacity: 0;
+}
+
+.card:hover::before {
+  left: 150%;
+  opacity: 1;
+}
+*/
+
 .card:hover {
   transform: scale(1.03);
   box-shadow: 0 0 15px #2196f3;
   transition: all 0.3s;
 }
-
-/*
-.card:nth-child(1) {
-  animation: addcard 10s ease-in-out both;
-}
-*/
 
 .card:nth-child(3n-2) {
   animation: fadeInCard 0.4s ease-in-out both;
@@ -45,6 +64,23 @@
     top: 0;
   }
 }
+
+/*
+
+@keyframes shimmerEffect {
+  0% {
+    left: -150%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    left: 150%;
+    opacity: 0;
+  }
+}
+  */
 
 /*
 @keyframes addcard {

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, memo, useRef } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import vector_close_icon from "../images/vector_close_icon.png";
+import vector_error_icon from "../images/vector_icon_error.png";
 
 const ConfirmDeleteCardPopup = memo(
-  ({ isOpen, onClose, idCard, onDeleteCard, openModalError }) => {
+  ({ isOpen, onClose, idCard, onDeleteCard, openModalInfoTooltip }) => {
     const statusRef = useRef(null);
     const [status, setStatus] = useState(false);
 
@@ -29,7 +30,7 @@ const ConfirmDeleteCardPopup = memo(
         document.removeEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "auto";
       };
-    }, [isOpen, status]);
+    }, [isOpen, status, onClose]);
 
     const handleConfirmDeleteSubmit = async (e) => {
       e.preventDefault();
@@ -41,7 +42,11 @@ const ConfirmDeleteCardPopup = memo(
       } catch (error) {
         setStatus(false);
         onClose();
-        openModalError();
+        //openModalError();
+        openModalInfoTooltip(
+          "Uy, algo salió mal. Error al eliminar la card.",
+          vector_error_icon
+        );
       }
     };
 

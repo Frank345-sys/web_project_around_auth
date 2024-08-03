@@ -25,7 +25,7 @@ function Main({
   onDeleteCard,
   onLikeCard,
   onDisLikeCard,
-  openModalError,
+  openModalInfoTooltip,
   isLoadCards,
   cards,
 }) {
@@ -54,6 +54,9 @@ function Main({
   //context
   const currentUser = useContext(CurrentUserContext);
 
+  // LoadPageInfoUser
+  const [isLoadInfoUser, setIsLoadInfoUser] = useState(false);
+
   //Se cargan los datos de currentUser
   useEffect(() => {
     if (currentUser && currentUser) {
@@ -63,9 +66,6 @@ function Main({
       setIsLoadInfoUser(true);
     }
   }, [currentUser]);
-
-  // LoadPageInfoUser
-  const [isLoadInfoUser, setIsLoadInfoUser] = useState(false);
 
   // card values
   const [isNameCard, setIsNameCard] = useState("");
@@ -140,14 +140,14 @@ function Main({
         onAboutUser={setNewAbout}
         isOpen={isEditProfileModal}
         onClose={closeModalEditProfile}
-        openModalError={openModalError}
+        openModalInfoTooltip={openModalInfoTooltip}
         formEditSubmit={onEditProfile}
       ></EditProfilePopup>
 
       <AddPlacePopup
         isOpen={isCreateCardModal}
         onClose={closeModalCreateCard}
-        openModalError={openModalError}
+        openModalInfoTooltip={openModalInfoTooltip}
         formAddSubmit={onAddPlace}
       ></AddPlacePopup>
 
@@ -155,7 +155,7 @@ function Main({
         onAvatarUser={setNewAvatar}
         isOpen={isEditAvatarModal}
         onClose={closeModalEditAvatar}
-        openModalError={openModalError}
+        openModalInfoTooltip={openModalInfoTooltip}
         formEditAvatarSubmit={onEditAvatar}
       ></EditAvatarPopup>
 
@@ -171,7 +171,7 @@ function Main({
         onClose={closeModalDeleteCard}
         idCard={isIdCard}
         onDeleteCard={onDeleteCard}
-        openModalError={openModalError}
+        openModalInfoTooltip={openModalInfoTooltip}
       ></ConfirmDeleteCardPopup>
 
       <main className="content">

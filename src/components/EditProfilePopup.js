@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, memo } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import vector_close_icon from "../images/vector_close_icon.png";
+import vector_error_icon from "../images/vector_icon_error.png";
 
 const EditProfilePopup = memo(
   ({
@@ -10,7 +11,7 @@ const EditProfilePopup = memo(
     onAboutUser,
     isOpen,
     onClose,
-    openModalError,
+    openModalInfoTooltip,
     formEditSubmit,
   }) => {
     const inputNameRef = useRef(null);
@@ -36,7 +37,7 @@ const EditProfilePopup = memo(
         setOccupation(aboutUser);
         setIsSubmitButtonDisabled(true);
       }
-    }, [isOpen]);
+    }, [isOpen, nameUser, aboutUser]);
 
     useEffect(() => {
       const handleEscapeKeyPress = (e) => {
@@ -54,7 +55,7 @@ const EditProfilePopup = memo(
         document.removeEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "auto";
       };
-    }, [isOpen, statusEdit]);
+    }, [isOpen, statusEdit, onClose]);
 
     /*
   useEffect(() => {
@@ -101,8 +102,12 @@ const EditProfilePopup = memo(
       } catch (error) {
         setStatusEdit(false);
         onClose();
-        openModalError();
-        console.error("Error al actualizar los datos del usuario :", error);
+        //openModalError();
+        openModalInfoTooltip(
+          "Uy, algo salió mal. Error al actualizar los datos del usuario.",
+          vector_error_icon
+        );
+        //console.error("Error al actualizar los datos del usuario :", error);
       }
     };
 

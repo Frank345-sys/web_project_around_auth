@@ -2,12 +2,6 @@ import React, { useEffect, memo } from "react";
 import vector_close_icon from "../images/vector_close_icon.png";
 
 const InfoTooltip = memo(({ isOpen, onClose, src, title }) => {
-  const handleEscapeKeyPress = (e) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  };
-
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -15,6 +9,12 @@ const InfoTooltip = memo(({ isOpen, onClose, src, title }) => {
   };
 
   useEffect(() => {
+    const handleEscapeKeyPress = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
     if (isOpen) {
       document.addEventListener("keydown", handleEscapeKeyPress);
       document.body.style.overflow = "hidden";
@@ -24,7 +24,7 @@ const InfoTooltip = memo(({ isOpen, onClose, src, title }) => {
       document.removeEventListener("keydown", handleEscapeKeyPress);
       document.body.style.overflow = "auto";
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   return (
     <div

@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef, memo } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import vector_close_icon from "../images/vector_close_icon.png";
+import vector_error_icon from "../images/vector_icon_error.png";
 
 const AddPlacePopup = memo(
-  ({ isOpen, onClose, openModalError, formAddSubmit }) => {
+  ({ isOpen, onClose, openModalInfoTooltip, formAddSubmit }) => {
     const inputNamePlaceRef = useRef(null);
     const inputUrlPlaceRef = useRef(null);
     const statusRef = useRef(null);
@@ -40,7 +41,7 @@ const AddPlacePopup = memo(
         document.removeEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "auto";
       };
-    }, [isOpen, statusCreateCard]);
+    }, [isOpen, statusCreateCard, onClose]);
 
     const handleInputNamePlaceChange = (e) => {
       setErrorNamePlace(!inputNamePlaceRef.current.validity.valid);
@@ -70,8 +71,12 @@ const AddPlacePopup = memo(
       } catch (error) {
         setStatusCreateCard(false);
         onClose();
-        openModalError();
-        console.error("Error al crear la tarjeta:", error);
+        //openModalError();
+        openModalInfoTooltip(
+          "Uy, algo salió mal. Error al crear la tarjeta.",
+          vector_error_icon
+        );
+        //console.error("Error al crear la tarjeta:", error);
       }
     };
 

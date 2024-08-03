@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useRef,
+} from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 import {
@@ -17,20 +23,22 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import InfoTooltip from "../components/InfoTooltip";
 import vector_error_icon from "../images/vector_icon_error.png";
-import vector_success_icon from "../images/vector_icon_success.png";
 import ReactLoading from "react-loading";
 import * as auth from "../utils/auth";
 
 function App() {
   const navigate = useNavigate();
+
   const location = useLocation();
 
   //useState
   const [email, setEmail] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoadingPage, setIsLoadingPage] = useState(false);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isModalOpenInfoTooltip, setIsModalOpenInfoTooltip] = useState(false);
+  const [isMessageInfoTooltip, setIsMessageInfoTooltip] = useState("");
+  const [isIconInfoTooltip, setIsIconInfoTooltip] = useState("");
+
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoadCards, setIsLoadCards] = useState(false);
   const [deletedCard, setDeletedCard] = useState(false);
@@ -42,19 +50,23 @@ function App() {
 
   //manejo de modales
   //metodos para abrir o cerrar modal success
-  const openErrorModal = useCallback(() => setIsErrorModalOpen(true), []);
-  const closeErrorModal = useCallback(() => setIsErrorModalOpen(false), []);
+  const openModalInfoTooltip = useCallback((message, icon) => {
+    setIsMessageInfoTooltip(message);
+    setIsIconInfoTooltip(icon);
+    setIsModalOpenInfoTooltip(true);
+  }, []);
 
-  //metodos para abrir o cerrar modal fail
-  const openSuccessModal = useCallback(() => setIsSuccessModalOpen(true), []);
-  const closeSuccessModal = useCallback(() => setIsSuccessModalOpen(false), []);
+  const closeModalInfoTooltip = useCallback(
+    () => setIsModalOpenInfoTooltip(false),
+    []
+  );
 
   //useRefs
   const contentRoutesRef = useRef(null);
 
   /* ////////////////////// check Token ////////////////////// */
 
-  const tokenCheck = useCallback(async () => {
+  const tokenCheck = useRef(async () => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       auth
@@ -64,19 +76,24 @@ function App() {
             isLogginTrue();
             navigate("/main");
             setEmail(res.data.email);
-            setIsLoadingPage(true);
           }
         })
         .catch((err) => {
-          console.error("Error al obtener el token: " + err);
+          //openErrorModal();
+          openModalInfoTooltip(
+            "Uy, algo salió mal. La aplicación esta fuera de servicio temporalmente.",
+            vector_error_icon
+          );
+          //console.error("Error al obtener el token: " + err);
+        })
+        .finally(() => {
+          setIsLoadingPage(true);
         });
-    } else {
-      setIsLoadingPage(true);
     }
-  }, []);
+  });
 
-  useEffect(() => {
-    tokenCheck();
+  useLayoutEffect(() => {
+    tokenCheck.current();
   }, []);
 
   /* ////////////////////// check Token ////////////////////// */
@@ -98,7 +115,7 @@ function App() {
     } else {
       setCurrentUser(null);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, fetchCurrentUser]);
 
   /* ////////////////////// currentUser ////////////////////// */
 
@@ -121,7 +138,7 @@ function App() {
       setCards([]);
       setIsLoadCards(false);
     }
-  }, [isLoggedIn, deletedCard]);
+  }, [isLoggedIn, deletedCard, fetchCards]);
 
   /* ////////////////////// fetch Cards ////////////////////// */
 
@@ -130,7 +147,7 @@ function App() {
     localStorage.removeItem("jwt");
     setEmail("");
     isLoginFalse();
-  }, []);
+  }, [isLoginFalse]);
 
   /* ///////////////////// Editar Perfil ///////////////////// */
   const handleFormEditProfileSubmit = useCallback((name, occupation) => {
@@ -191,20 +208,11 @@ function App() {
         ></Header>
 
         <InfoTooltip
-          isOpen={isErrorModalOpen}
-          onClose={closeErrorModal}
-          src={vector_error_icon}
-          title={"Uy, algo salió mal. Por favor, inténtalo de nuevo."}
+          isOpen={isModalOpenInfoTooltip}
+          onClose={closeModalInfoTooltip}
+          src={isIconInfoTooltip}
+          title={isMessageInfoTooltip}
         ></InfoTooltip>
-
-        {isLoggedIn === false && (
-          <InfoTooltip
-            isOpen={isSuccessModalOpen}
-            onClose={closeSuccessModal}
-            src={vector_success_icon}
-            title={"¡Correcto! Ya estás registrado."}
-          ></InfoTooltip>
-        )}
 
         {isLoadingPage ? (
           <SwitchTransition>
@@ -223,7 +231,7 @@ function App() {
                       <Login
                         navigate={navigate}
                         logginTrue={isLogginTrue}
-                        openModalError={openErrorModal}
+                        openModalInfoTooltip={openModalInfoTooltip}
                         setEmailUser={setEmail}
                       />
                     }
@@ -233,8 +241,7 @@ function App() {
                     element={
                       <Register
                         navigate={navigate}
-                        openModalError={openErrorModal}
-                        openSuccessModal={openSuccessModal}
+                        openModalInfoTooltip={openModalInfoTooltip}
                       />
                     }
                   />
@@ -250,7 +257,7 @@ function App() {
                         onDeleteCard={handleCardDelete}
                         onLikeCard={handleLikeCard}
                         onDisLikeCard={handleDislikeCard}
-                        openModalError={openErrorModal}
+                        openModalInfoTooltip={openModalInfoTooltip}
                         isLoadCards={isLoadCards}
                         cards={cards}
                       ></ProtectedRoute>

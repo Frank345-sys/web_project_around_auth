@@ -1,9 +1,16 @@
 import React, { useEffect, useState, useRef, memo } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import vector_close_icon from "../images/vector_close_icon.png";
+import vector_error_icon from "../images/vector_icon_error.png";
 
 const EditAvatarPopup = memo(
-  ({ onAvatarUser, isOpen, onClose, openModalError, formEditAvatarSubmit }) => {
+  ({
+    onAvatarUser,
+    isOpen,
+    onClose,
+    openModalInfoTooltip,
+    formEditAvatarSubmit,
+  }) => {
     const inputUrlAvatarRef = useRef(null);
     const statusRef = useRef(null);
 
@@ -43,7 +50,7 @@ const EditAvatarPopup = memo(
         document.removeEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "auto";
       };
-    }, [isOpen, statusEditPhoto]);
+    }, [isOpen, statusEditPhoto, onClose]);
 
     const handleAvatarChange = (e) => {
       setErrorUrlAvatar(!inputUrlAvatarRef.current.validity.valid);
@@ -62,8 +69,12 @@ const EditAvatarPopup = memo(
       } catch (error) {
         setStatusEditPhoto(false);
         onClose();
-        openModalError();
-        console.error("Error al actualizar foto de perfil:", error);
+        //openModalError();
+        openModalInfoTooltip(
+          "Uy, algo salió mal. Error al actualizar foto de perfil.",
+          vector_error_icon
+        );
+        //console.error("Error al actualizar foto de perfil:", error);
       }
     };
 
