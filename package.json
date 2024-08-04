@@ -22,7 +22,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy-gh-pages": "gh-pages -d build",
+    "deploy-server": "scp -r ./build/* francgonzalez456@around-project.mega-link.cl:/home/francgonzalez456/frontend",
+    "deploy": "npm-run-all build deploy-gh-pages"
   },
   "eslintConfig": {
     "extends": [
@@ -44,7 +46,8 @@
   },
   "devDependencies": {
     "@welldone-software/why-did-you-render": "^8.0.1",
-    "gh-pages": "^6.0.0"
+    "gh-pages": "^6.0.0",
+    "npm-run-all": "^4.1.5"
   },
   "homepage": "https://Frank345-sys.github.io/web_project_around_auth"
 }
