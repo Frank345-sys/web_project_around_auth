@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/web_project_around_auth/static/css/main.7d01c3ef.css",
-    "main.js": "/web_project_around_auth/static/js/main.3f422e85.js",
-    "static/js/453.8d428687.chunk.js": "/web_project_around_auth/static/js/453.8d428687.chunk.js",
-    "static/media/Inter-MediumItalic.woff?v=3.19": "/web_project_around_auth/static/media/Inter-MediumItalic.3d0107dd43d0101274d3.woff",
-    "static/media/Inter-BlackItalic.woff?v=3.19": "/web_project_around_auth/static/media/Inter-BlackItalic.ca1e738e4f349f27514d.woff",
-    "static/media/Inter-Italic.woff?v=3.19": "/web_project_around_auth/static/media/Inter-Italic.890025e726861dba417f.woff",
-    "static/media/Inter-Medium.woff?v=3.19": "/web_project_around_auth/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
-    "static/media/Inter-Black.woff?v=3.19": "/web_project_around_auth/static/media/Inter-Black.c6938660eec019fefd68.woff",
-    "static/media/Inter-Regular.woff?v=3.19": "/web_project_around_auth/static/media/Inter-Regular.8c206db99195777c6769.woff",
-    "static/media/Inter-MediumItalic.woff2?v=3.19": "/web_project_around_auth/static/media/Inter-MediumItalic.085cb93e613ba3d40d2b.woff2",
-    "static/media/Inter-BlackItalic.woff2?v=3.19": "/web_project_around_auth/static/media/Inter-BlackItalic.cb2a7335650c690077fe.woff2",
-    "static/media/Inter-Italic.woff2?v=3.19": "/web_project_around_auth/static/media/Inter-Italic.cb10ffd7684cd9836a05.woff2",
-    "static/media/Inter-Medium.woff2?v=3.19": "/web_project_around_auth/static/media/Inter-Medium.293fd13dbca5a3e450ef.woff2",
-    "static/media/Inter-Black.woff2?v=3.19": "/web_project_around_auth/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
-    "static/media/Inter-Regular.woff2?v=3.19": "/web_project_around_auth/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
-    "index.html": "/web_project_around_auth/index.html",
-    "main.7d01c3ef.css.map": "/web_project_around_auth/static/css/main.7d01c3ef.css.map",
-    "main.3f422e85.js.map": "/web_project_around_auth/static/js/main.3f422e85.js.map",
-    "453.8d428687.chunk.js.map": "/web_project_around_auth/static/js/453.8d428687.chunk.js.map"
+    "main.css": "https://Frank345-sys.github.io/web_project_around_auth/static/css/main.eb869548.css",
+    "main.js": "https://Frank345-sys.github.io/web_project_around_auth/static/js/main.5099d52f.js",
+    "static/js/453.8d428687.chunk.js": "https://Frank345-sys.github.io/web_project_around_auth/static/js/453.8d428687.chunk.js",
+    "static/media/Inter-MediumItalic.woff?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-MediumItalic.3d0107dd43d0101274d3.woff",
+    "static/media/Inter-BlackItalic.woff?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-BlackItalic.ca1e738e4f349f27514d.woff",
+    "static/media/Inter-Italic.woff?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Italic.890025e726861dba417f.woff",
+    "static/media/Inter-Medium.woff?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
+    "static/media/Inter-Black.woff?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Black.c6938660eec019fefd68.woff",
+    "static/media/Inter-Regular.woff?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Regular.8c206db99195777c6769.woff",
+    "static/media/Inter-MediumItalic.woff2?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-MediumItalic.085cb93e613ba3d40d2b.woff2",
+    "static/media/Inter-BlackItalic.woff2?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-BlackItalic.cb2a7335650c690077fe.woff2",
+    "static/media/Inter-Italic.woff2?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Italic.cb10ffd7684cd9836a05.woff2",
+    "static/media/Inter-Medium.woff2?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Medium.293fd13dbca5a3e450ef.woff2",
+    "static/media/Inter-Black.woff2?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
+    "static/media/Inter-Regular.woff2?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
+    "index.html": "https://Frank345-sys.github.io/web_project_around_auth/index.html",
+    "main.eb869548.css.map": "https://Frank345-sys.github.io/web_project_around_auth/static/css/main.eb869548.css.map",
+    "main.5099d52f.js.map": "https://Frank345-sys.github.io/web_project_around_auth/static/js/main.5099d52f.js.map",
+    "453.8d428687.chunk.js.map": "https://Frank345-sys.github.io/web_project_around_auth/static/js/453.8d428687.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7d01c3ef.css",
-    "static/js/main.3f422e85.js"
+    "static/css/main.eb869548.css",
+    "static/js/main.5099d52f.js"
   ]
 }
