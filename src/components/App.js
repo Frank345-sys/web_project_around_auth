@@ -74,7 +74,7 @@ function App() {
         .then((res) => {
           if (res) {
             isLogginTrue();
-            navigate("/main");
+            navigate("/web_project_around_auth/main");
             setEmail(res.data.email);
           }
         })
@@ -226,7 +226,7 @@ function App() {
               <div ref={contentRoutesRef}>
                 <Routes location={location}>
                   <Route
-                    path="/login"
+                    path="/web_project_around_auth/login"
                     element={
                       <Login
                         navigate={navigate}
@@ -237,7 +237,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="/register"
+                    path="/web_project_around_auth/register"
                     element={
                       <Register
                         navigate={navigate}
@@ -246,7 +246,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="/main"
+                    path="/web_project_around_auth/main"
                     element={
                       <ProtectedRoute
                         loggedIn={isLoggedIn}
@@ -263,7 +263,10 @@ function App() {
                       ></ProtectedRoute>
                     }
                   />
-                  <Route path="*" element={<Navigate to="/login" />} />
+                  <Route
+                    path="*"
+                    element={<Navigate to="/web_project_around_auth/login" />}
+                  />
                 </Routes>
               </div>
             </CSSTransition>

@@ -38,7 +38,7 @@ function Register({ navigate, openModalInfoTooltip }) {
             "¡Correcto! Ya estás registrado.",
             vector_success_icon
           );
-          navigate("/login");
+          navigate("/web_project_around_auth/login");
         })
         .catch(() => {
           setStatusRegister(false);

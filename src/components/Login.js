@@ -35,7 +35,7 @@ function Login({ navigate, logginTrue, openModalInfoTooltip, setEmailUser }) {
         setStatusLogin(false);
         setEmailUser(values.emailUser);
         logginTrue();
-        navigate("/main");
+        navigate("/web_project_around_auth/main");
       })
       .catch(() => {
         setStatusLogin(false);
