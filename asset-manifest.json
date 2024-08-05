@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "https://Frank345-sys.github.io/web_project_around_auth/static/css/main.eb869548.css",
-    "main.js": "https://Frank345-sys.github.io/web_project_around_auth/static/js/main.527ad07e.js",
+    "main.js": "https://Frank345-sys.github.io/web_project_around_auth/static/js/main.2d93f9f5.js",
     "static/js/453.8d428687.chunk.js": "https://Frank345-sys.github.io/web_project_around_auth/static/js/453.8d428687.chunk.js",
     "static/media/Inter-MediumItalic.woff?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-MediumItalic.3d0107dd43d0101274d3.woff",
     "static/media/Inter-BlackItalic.woff?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-BlackItalic.ca1e738e4f349f27514d.woff",
@@ -17,11 +17,11 @@
     "static/media/Inter-Regular.woff2?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
     "index.html": "https://Frank345-sys.github.io/web_project_around_auth/index.html",
     "main.eb869548.css.map": "https://Frank345-sys.github.io/web_project_around_auth/static/css/main.eb869548.css.map",
-    "main.527ad07e.js.map": "https://Frank345-sys.github.io/web_project_around_auth/static/js/main.527ad07e.js.map",
+    "main.2d93f9f5.js.map": "https://Frank345-sys.github.io/web_project_around_auth/static/js/main.2d93f9f5.js.map",
     "453.8d428687.chunk.js.map": "https://Frank345-sys.github.io/web_project_around_auth/static/js/453.8d428687.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.eb869548.css",
-    "static/js/main.527ad07e.js"
+    "static/js/main.2d93f9f5.js"
   ]
 }
