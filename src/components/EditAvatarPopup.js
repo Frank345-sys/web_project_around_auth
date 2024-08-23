@@ -63,18 +63,24 @@ const EditAvatarPopup = memo(
       setStatusEditPhoto(true);
       try {
         const result = await formEditAvatarSubmit(urlAvatar);
-        setStatusEditPhoto(false);
-        onClose();
+        console.log(result);
         onAvatarUser(result.avatar);
       } catch (error) {
+        if (error.message.includes("Failed to fetch")) {
+          openModalInfoTooltip(
+            "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+            vector_error_icon
+          );
+          //navigate("/login");
+        } else {
+          openModalInfoTooltip(
+            "¡Uy!, algo salió mal. Error al actualizar la foto de perfil.",
+            vector_error_icon
+          );
+        }
+      } finally {
         setStatusEditPhoto(false);
         onClose();
-        //openModalError();
-        openModalInfoTooltip(
-          "Uy, algo salió mal. Error al actualizar foto de perfil.",
-          vector_error_icon
-        );
-        //console.error("Error al actualizar foto de perfil:", error);
       }
     };
 
@@ -116,6 +122,7 @@ const EditAvatarPopup = memo(
                 value={urlAvatar}
                 ref={inputUrlAvatarRef}
                 onChange={handleAvatarChange}
+                disabled={statusEditPhoto}
               />
               <span
                 className={`error error_input-url-edit ${
@@ -128,9 +135,9 @@ const EditAvatarPopup = memo(
               <button
                 className={`button button_edit-photo ${
                   isSubmitButtonDisabled ? "button_inactive" : ""
-                }`}
+                } ${statusEditPhoto ? "button_inactive" : ""}`}
                 type="submit"
-                disabled={isSubmitButtonDisabled}
+                disabled={isSubmitButtonDisabled || statusEditPhoto}
               >
                 <SwitchTransition>
                   <CSSTransition

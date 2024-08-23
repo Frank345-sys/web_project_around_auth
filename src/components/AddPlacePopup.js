@@ -66,17 +66,22 @@ const AddPlacePopup = memo(
       setStatusCreateCard(true);
       try {
         await formAddSubmit(namePlace, urlPlace);
-        setStatusCreateCard(false);
-        onClose();
       } catch (error) {
+        if (error.message.includes("Failed to fetch")) {
+          openModalInfoTooltip(
+            "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+            vector_error_icon
+          );
+          //navigate("/login");
+        } else {
+          openModalInfoTooltip(
+            "¡Uy!, algo salió mal. Uno o más campos contienen datos no válidos.",
+            vector_error_icon
+          );
+        }
+      } finally {
         setStatusCreateCard(false);
         onClose();
-        //openModalError();
-        openModalInfoTooltip(
-          "Uy, algo salió mal. Error al crear la tarjeta.",
-          vector_error_icon
-        );
-        //console.error("Error al crear la tarjeta:", error);
       }
     };
 
@@ -119,6 +124,7 @@ const AddPlacePopup = memo(
                 maxLength="30"
                 ref={inputNamePlaceRef}
                 onChange={handleInputNamePlaceChange}
+                disabled={statusCreateCard}
               />
               <span
                 className={`error error_input-name-place ${
@@ -139,6 +145,7 @@ const AddPlacePopup = memo(
                 required
                 ref={inputUrlPlaceRef}
                 onChange={handleInputUrlPlaceChange}
+                disabled={statusCreateCard}
               />
               <span
                 className={`error error_input-url ${
@@ -151,9 +158,9 @@ const AddPlacePopup = memo(
               <button
                 className={`button button_add ${
                   isSubmitButtonDisabled ? "button_inactive" : ""
-                }`}
+                } ${statusCreateCard ? "button_inactive" : ""}`}
                 type="submit"
-                disabled={isSubmitButtonDisabled}
+                disabled={isSubmitButtonDisabled || statusCreateCard}
               >
                 <SwitchTransition>
                   <CSSTransition

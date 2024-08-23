@@ -32,26 +32,32 @@ function Register({ navigate, openModalInfoTooltip }) {
       auth
         .register(values.passwordUser, values.emailUser)
         .then(() => {
-          setStatusRegister(false);
-          //openCorrectModal();
           openModalInfoTooltip(
             "¡Correcto! Ya estás registrado.",
             vector_success_icon
           );
-          navigate("/web_project_around_auth/login");
+          navigate("/login");
         })
-        .catch(() => {
+        .catch((error) => {
+          if (error.message.includes("Failed to fetch")) {
+            openModalInfoTooltip(
+              "¡Uy!, falló en la conexión con el servidor, intentalo más tarde.",
+              vector_error_icon
+            );
+            navigate("/login");
+          } else {
+            openModalInfoTooltip(
+              "¡Uy!, algo salió mal. Uno o más campos contienen datos no válidos.",
+              vector_error_icon
+            );
+          }
+        })
+        .finally(() => {
           setStatusRegister(false);
-          //openModalError();
-          openModalInfoTooltip(
-            "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
-            vector_error_icon
-          );
         });
     } else {
-      //openModalError();
       openModalInfoTooltip(
-        "Uy, algo salió mal. Las contraseñas no coinciden",
+        "¡Uy!, algo salió mal. Las contraseñas no coinciden.",
         vector_error_icon
       );
     }
@@ -89,6 +95,8 @@ function Register({ navigate, openModalInfoTooltip }) {
                       !inputConfirmPasswordRef.current.validity.valid
                   );
                 }}
+                placeholder="Correo electrónico"
+                disabled={statusRegister}
               />
               <label className="wrapper__label">Correo electrónico</label>
             </div>
@@ -121,6 +129,8 @@ function Register({ navigate, openModalInfoTooltip }) {
                       !inputConfirmPasswordRef.current.validity.valid
                   );
                 }}
+                placeholder="Contraseña"
+                disabled={statusRegister}
               />
               <label className="wrapper__label">Contraseña</label>
             </div>
@@ -157,6 +167,8 @@ function Register({ navigate, openModalInfoTooltip }) {
                       !inputConfirmPasswordRef.current.validity.valid
                   );
                 }}
+                placeholder="Confirmar contraseña"
+                disabled={statusRegister}
               />
               <label className="wrapper__label">Confirmar contraseña</label>
             </div>
@@ -171,9 +183,9 @@ function Register({ navigate, openModalInfoTooltip }) {
             <button
               className={`button button_register ${
                 isSubmitButtonDisabled ? "button_inactive" : ""
-              }`}
+              } ${statusRegister ? "button_inactive" : ""}`}
               type="submit"
-              disabled={isSubmitButtonDisabled}
+              disabled={isSubmitButtonDisabled || statusRegister}
             >
               <SwitchTransition>
                 <CSSTransition

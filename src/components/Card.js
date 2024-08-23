@@ -1,6 +1,7 @@
 import React, { useState, useContext, memo } from "react";
 import vector_delete_icon from "../images/vector_delete_icon.png";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import vector_error_icon from "../images/vector_icon_error.png";
 
 const Card = memo(
   ({
@@ -9,17 +10,28 @@ const Card = memo(
     idCard,
     likes,
     user,
+    date,
     onLike,
     onDisLike,
     onOpenPopUpImage,
-    onOpenModalDeleteCard,
+    onOpenModalDeleteCard = () => {},
+    openModalInfoTooltip,
+    isCardAdded,
+    onViewProfile = () => {},
+    tooltipMs,
   }) => {
     //context
     const currentUser = useContext(CurrentUserContext);
-
+    /*
     const [isLiked, setIsLiked] = useState(
       likes.some((element) => element._id === currentUser._id)
     );
+    */
+    const dateCard = new Date(date);
+
+    const formattedDate = dateCard.toLocaleDateString("es-ES");
+
+    const [isLiked, setIsLiked] = useState(likes.includes(currentUser._id));
 
     const [countLikes, setCountLikes] = useState(likes.length);
 
@@ -35,25 +47,51 @@ const Card = memo(
       if (isLiked) {
         try {
           const result = await onDisLike(idCard);
-          setCountLikes(result.likes.length);
+          setCountLikes(result.length);
           setIsLiked(!isLiked);
         } catch (error) {
-          console.error("Error al dar Dislike a la tarjeta:", error);
+          if (error.message.includes("Failed to fetch")) {
+            openModalInfoTooltip(
+              "¡Uy!, falló en la conexión con el servidor. Serás redirigido.",
+              vector_error_icon
+            );
+            //navigate("/login");
+          } else {
+            openModalInfoTooltip(
+              "¡Uy!, algo salió mal. Error al dar Dislike a la tarjeta.",
+              vector_error_icon
+            );
+          }
         }
       } else {
         try {
           const result = await onLike(idCard);
-          setCountLikes(result.likes.length);
+          setCountLikes(result.length);
           setIsLiked(!isLiked);
         } catch (error) {
-          console.error("Error al dar like a la tarjeta:", error);
+          if (error.message.includes("Failed to fetch")) {
+            openModalInfoTooltip(
+              "¡Uy!, falló en la conexión con el servidor. Serás redirigido.",
+              vector_error_icon
+            );
+            //navigate("/login");
+          } else {
+            openModalInfoTooltip(
+              "¡Uy!, algo salió mal. Error al dar like a la tarjeta.",
+              vector_error_icon
+            );
+          }
         }
       }
     };
 
     return (
       <>
-        <article className="card">
+        <article
+          className={`card ${isCardAdded ? "card-added" : ""} ${
+            currentUser._id === user._id ? "card_border" : ""
+          }`}
+        >
           <button
             type="button"
             className={`card__button-delete ${
@@ -65,12 +103,21 @@ const Card = memo(
           >
             <img alt="icono borrar" src={vector_delete_icon} />
           </button>
-
-          <img
-            alt={"Imagen ilustrativa del usuario " + user.name}
-            src={user.avatar}
+          <p className="card__date">{formattedDate}</p>
+          <button
             className="card__photo-item-user"
-          />
+            disabled={currentUser._id === user._id}
+            onClick={() => onViewProfile(user)}
+          >
+            <img
+              alt={"Imagen ilustrativa del usuario " + user.name}
+              src={user.avatar}
+            />
+          </button>
+          <div class="card__tooltip">
+            <span>{currentUser._id === user._id ? "Tú" : tooltipMs}</span>
+          </div>
+
           <div className="card__photo-item">
             <img
               alt={"Imagen ilustrativa de " + name}

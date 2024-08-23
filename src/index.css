@@ -13,6 +13,9 @@ code {
     monospace;
 }
 */
+* {
+  box-sizing: border-box;
+}
 
 @import url(./vendor/normalize.css);
 @import url(./fonts/inter-web/inter.css);
@@ -72,6 +75,7 @@ code {
 
 /*bloque*/
 @import url(./blocks/profile/profile.css);
+@import url(./blocks/profile/__content-navegate-buttons/profile__content-navegate-buttons.css);
 /*bloque*/
 
 /*bloque*/
@@ -80,6 +84,7 @@ code {
 
 /*elementos*/
 @import url(./blocks/content-profile/__add-button/content-profile__add-button.css);
+@import url(./blocks/content-profile/__return-button/content-profile__return-button.css);
 /*elementos*/
 
 /*bloque*/
@@ -109,6 +114,10 @@ code {
 @import url(./blocks/photos-grid/photos-grid.css);
 /*bloque*/
 
+/*elementos*/
+@import url(./blocks/photos-grid/__message/photos-grid__message.css);
+/*elementos*/
+
 /*bloque*/
 @import url(./blocks/content-photos/content-photos.css);
 /*bloque*/
@@ -119,8 +128,10 @@ code {
 
 /*elementos y modificadores*/
 @import url(./blocks/card/_delete/card_delete.css);
+@import url(./blocks/card/__date/card__date.css);
 @import url(./blocks/card/__photo-item/card__photo-item.css);
 @import url(./blocks/card/__photo-item-user/card__photo-item-user.css);
+@import url(./blocks/card/__tooltip/card__tooltip.css);
 @import url(./blocks/card/__button-delete/card__button-delete.css);
 @import url(./blocks/card/__button-delete/_visibility/_visible/card__button-delete_visibility_visible.css);
 /*elementos y modificadores*/
@@ -147,6 +158,11 @@ code {
 /*bloque*/
 @import url(./blocks/footer/footer.css);
 /*bloque*/
+
+/*elementos y modificadores*/
+@import url(./blocks/footer/__button/footer__button.css);
+@import url(./blocks/footer/__button/_visibility-visible/footer__button_visibility-visible.css);
+/*elementos y modificadores*/
 
 /*bloque*/
 @import url(./blocks/content-footer/content-footer.css);
@@ -266,6 +282,9 @@ code {
 @import url(./blocks/button/_login/button_login.css);
 @import url(./blocks/button/_register/button_register.css);
 @import url(./blocks/button/_inactive/button_inactive.css);
+@import url(./blocks/button/_profile/button_profile.css);
+@import url(./blocks/button/_profile/button_profile-user.css);
+@import url(./blocks/button/_profile-active/button_profile-active.css);
 /*modificadores*/
 
 /*bloque*/
@@ -273,7 +292,6 @@ code {
 /*bloque*/
 
 /*modificadores*/
-@import url(./blocks/content-pop-up/_image/content-pop-up_image.css);
 @import url(./blocks/content-pop-up/_visibility/_visible/content-pop-up_visibility_visible.css);
 /*modificadores*/
 

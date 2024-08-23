@@ -22,6 +22,49 @@ function Login({ navigate, logginTrue, openModalInfoTooltip, setEmailUser }) {
     passwordUser: "",
   });
 
+  /*
+  useEffect(() => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      emailUser: inputEmailRef.current && inputEmailRef.current.value,
+      passwordUser: inputPasswordRef.current && inputPasswordRef.current.value,
+    }));
+    console.log(values.emailUser);
+    console.log(values.passwordUser);
+  }, []);
+  */
+
+  /*
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (inputEmailRef.current && inputPasswordRef.current) {
+        setValues({
+          emailUser: inputEmailRef.current.value,
+          passwordUser: inputPasswordRef.current.value,
+        });
+      }
+      console.log(values.emailUser);
+      console.log(values.passwordUser);
+    }, 500); // Espera 500ms para dar tiempo a que el navegador complete los campos
+
+    return () => clearTimeout(timer);
+  }, []);
+  */
+
+  /*
+  useEffect(() => {
+    setErrorEmail(!inputEmailRef.current.validity.valid);
+  }, []);
+
+  useEffect(() => {
+    setErrorPassword(!inputPasswordRef.current.validity.valid);
+  }, []);
+
+  useEffect(() => {
+    setIsSubmitButtonDisabled(errorEmail || errorPassword);
+  }, []);
+  */
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatusLogin(true);
@@ -32,18 +75,25 @@ function Login({ navigate, logginTrue, openModalInfoTooltip, setEmailUser }) {
           "¡Correcto! Sesión iniciada.",
           vector_success_icon
         );
-        setStatusLogin(false);
         setEmailUser(values.emailUser);
         logginTrue();
-        navigate("/web_project_around_auth/main");
+        navigate("/main");
       })
-      .catch(() => {
+      .catch((error) => {
+        if (error.message.includes("Failed to fetch")) {
+          openModalInfoTooltip(
+            "¡Uy!, falló en la conexión con el servidor, intentalo más tarde.",
+            vector_error_icon
+          );
+        } else {
+          openModalInfoTooltip(
+            "¡Uy!, algo salió mal. Uno o más campos contienen datos no válidos.",
+            vector_error_icon
+          );
+        }
+      })
+      .finally(() => {
         setStatusLogin(false);
-        //openModalError();
-        openModalInfoTooltip(
-          "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
-          vector_error_icon
-        );
       });
   };
 
@@ -78,6 +128,8 @@ function Login({ navigate, logginTrue, openModalInfoTooltip, setEmailUser }) {
                       !inputPasswordRef.current.validity.valid
                   );
                 }}
+                placeholder="Correo electrónico"
+                disabled={statusLogin}
               />
               <label className="wrapper__label">Correo electrónico</label>
             </div>
@@ -109,6 +161,8 @@ function Login({ navigate, logginTrue, openModalInfoTooltip, setEmailUser }) {
                       !inputPasswordRef.current.validity.valid
                   );
                 }}
+                placeholder="Contraseña"
+                disabled={statusLogin}
               />
               <label className="wrapper__label">Contraseña</label>
             </div>
@@ -123,9 +177,9 @@ function Login({ navigate, logginTrue, openModalInfoTooltip, setEmailUser }) {
             <button
               className={`button button_login ${
                 isSubmitButtonDisabled ? "button_inactive" : ""
-              }`}
+              } ${statusLogin ? "button_inactive" : ""}`}
               type="submit"
-              disabled={isSubmitButtonDisabled}
+              disabled={isSubmitButtonDisabled || statusLogin}
             >
               <SwitchTransition>
                 <CSSTransition

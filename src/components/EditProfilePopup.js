@@ -95,19 +95,24 @@ const EditProfilePopup = memo(
       setStatusEdit(true);
       try {
         const result = await formEditSubmit(name, occupation);
-        setStatusEdit(false);
-        onClose();
         onNameUser(result.name);
         onAboutUser(result.about);
       } catch (error) {
+        if (error.message.includes("Failed to fetch")) {
+          openModalInfoTooltip(
+            "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+            vector_error_icon
+          );
+          //navigate("/login");
+        } else {
+          openModalInfoTooltip(
+            "¡Uy!, algo salió mal, error al actualizar los datos.",
+            vector_error_icon
+          );
+        }
+      } finally {
         setStatusEdit(false);
         onClose();
-        //openModalError();
-        openModalInfoTooltip(
-          "Uy, algo salió mal. Error al actualizar los datos del usuario.",
-          vector_error_icon
-        );
-        //console.error("Error al actualizar los datos del usuario :", error);
       }
     };
 
@@ -151,6 +156,7 @@ const EditProfilePopup = memo(
                 ref={inputNameRef}
                 value={name}
                 onChange={handleInputNameChange}
+                disabled={statusEdit}
               />
               <span
                 className={`error error_input-name ${
@@ -173,6 +179,7 @@ const EditProfilePopup = memo(
                 ref={inputOccupationRef}
                 value={occupation}
                 onChange={handleInputOccupationChange}
+                disabled={statusEdit}
               />
               <span
                 className={`error error_input-occupation ${
@@ -185,9 +192,9 @@ const EditProfilePopup = memo(
               <button
                 className={`button button_edit ${
                   isSubmitButtonDisabled ? "button_inactive" : ""
-                }`}
+                } ${statusEdit ? "button_inactive" : ""}`}
                 type="submit"
-                disabled={isSubmitButtonDisabled}
+                disabled={isSubmitButtonDisabled || statusEdit}
               >
                 <SwitchTransition>
                   <CSSTransition

@@ -21,10 +21,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build-gh-pages",
     "deploy-gh-pages": "gh-pages -d build",
-    "deploy-server": "scp -r ./build/* francgonzalez456@around-project.mega-link.cl:/home/francgonzalez456/frontend",
-    "deploy": "npm-run-all build deploy-gh-pages"
+    "build-gh-pages": "cross-env PUBLIC_URL=https://Frank345-sys.github.io/web_project_around_auth npm run build",
+    "build-server": "cross-env PUBLIC_URL=/ npm run build",
+    "deploy": "npm run deploy-gh-pages"
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@welldone-software/why-did-you-render": "^8.0.1",
+    "cross-env": "^7.0.3",
     "gh-pages": "^6.0.0",
     "npm-run-all": "^4.1.5"
   },

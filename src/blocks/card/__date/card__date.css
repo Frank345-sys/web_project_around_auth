@@ -1,0 +1,9 @@
+.card__date {
+  display: flex;
+  position: absolute;
+  font-size: 15px;
+  color: white;
+  top: 70%;
+  right: 15px;
+  text-shadow: 1px 1px 1px rgb(0, 0, 0);
+}

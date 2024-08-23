@@ -11,9 +11,11 @@
   /*color: white;*/
   color: rgb(0, 123, 255);
   padding: 2px 4px;
-  transition: all 0.4s;
+  opacity: 1;
   background-color: rgb(0, 0, 0);
   border-radius: 4px;
+  transition: all 0.4s;
+  transition-delay: 0.3s;
 }
 
 .wrapper .wrapper__input:valid ~ .wrapper__label {
@@ -22,12 +24,29 @@
   /*color: black;*/
   color: #cccccc;
   padding: 2px 4px;
-  transition: all 0.4s;
+  opacity: 1;
   background-color: black;
   border-radius: 4px;
+  transition: all 0.4s;
+}
+
+.wrapper .wrapper__input:focus::placeholder {
+  color: transparent;
+  transition: all 0.3s;
+}
+
+.wrapper .wrapper__input::placeholder {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 17px;
+  color: #cccccc;
+  transition: all 0.3s;
+  transition-delay: 0.7s;
 }
 
 .wrapper .wrapper__input:valid:focus ~ .wrapper__label {
   color: white;
+  opacity: 1;
   background-color: rgb(0, 123, 255);
+  transition: all 0.3s;
 }

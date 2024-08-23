@@ -58,4 +58,7 @@
     line-height: 27px;
     text-align: center;
   }
+  .content-prof-info-text__name_with-100 {
+    width: 100%;
+  }
 }

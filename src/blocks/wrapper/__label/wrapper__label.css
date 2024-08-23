@@ -4,5 +4,7 @@
   left: 6px;
   color: #cccccc;
   pointer-events: none;
+  opacity: 0;
   transition: all 0.4s;
+  transition-delay: 0.3s;
 }

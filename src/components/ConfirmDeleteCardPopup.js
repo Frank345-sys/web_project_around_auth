@@ -6,17 +6,17 @@ import vector_error_icon from "../images/vector_icon_error.png";
 const ConfirmDeleteCardPopup = memo(
   ({ isOpen, onClose, idCard, onDeleteCard, openModalInfoTooltip }) => {
     const statusRef = useRef(null);
-    const [status, setStatus] = useState(false);
+    const [isStatus, setIsStatus] = useState(false);
 
     const handleOutsideClick = (e) => {
-      if (e.target === e.currentTarget && status === false) {
+      if (e.target === e.currentTarget && isStatus === false) {
         onClose();
       }
     };
 
     useEffect(() => {
       const handleEscapeKeyPress = (e) => {
-        if (e.key === "Escape" && status === false) {
+        if (e.key === "Escape" && isStatus === false) {
           onClose();
         }
       };
@@ -30,23 +30,29 @@ const ConfirmDeleteCardPopup = memo(
         document.removeEventListener("keydown", handleEscapeKeyPress);
         document.body.style.overflow = "auto";
       };
-    }, [isOpen, status, onClose]);
+    }, [isOpen, isStatus, onClose]);
 
     const handleConfirmDeleteSubmit = async (e) => {
       e.preventDefault();
-      setStatus(true);
+      setIsStatus(true);
       try {
         await onDeleteCard(idCard);
-        setStatus(false);
-        onClose();
       } catch (error) {
-        setStatus(false);
+        if (error.message.includes("Failed to fetch")) {
+          openModalInfoTooltip(
+            "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+            vector_error_icon
+          );
+          //navigate("/login");
+        } else {
+          openModalInfoTooltip(
+            "¡Uy!, algo salió mal. Error al eliminar la tarjeta.",
+            vector_error_icon
+          );
+        }
+      } finally {
+        setIsStatus(false);
         onClose();
-        //openModalError();
-        openModalInfoTooltip(
-          "Uy, algo salió mal. Error al eliminar la card.",
-          vector_error_icon
-        );
       }
     };
 
@@ -60,7 +66,7 @@ const ConfirmDeleteCardPopup = memo(
         <div className="modal">
           <button
             onClick={() => {
-              if (status === false) {
+              if (isStatus === false) {
                 onClose();
               }
             }}
@@ -76,17 +82,23 @@ const ConfirmDeleteCardPopup = memo(
             onSubmit={handleConfirmDeleteSubmit}
           >
             <fieldset className="modal-form__set">
-              <button className="button button_delete-card" type="submit">
+              <button
+                className={`button button_delete-card ${
+                  isStatus ? "button_inactive" : ""
+                }`}
+                type="submit"
+                disabled={isStatus}
+              >
                 <SwitchTransition>
                   <CSSTransition
-                    key={status}
+                    key={isStatus}
                     nodeRef={statusRef}
                     timeout={300}
                     classNames="fade"
                     unmountOnExit
                   >
                     <div ref={statusRef}>
-                      {status ? "Eliminando..." : "Elimiar"}
+                      {isStatus ? "Eliminando..." : "Elimiar"}
                     </div>
                   </CSSTransition>
                 </SwitchTransition>

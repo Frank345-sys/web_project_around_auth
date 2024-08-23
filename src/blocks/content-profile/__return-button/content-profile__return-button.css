@@ -1,0 +1,11 @@
+.content-profile__return-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 55px;
+  width: 55px;
+  background-color: black;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+}

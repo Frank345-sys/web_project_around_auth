@@ -1,0 +1,38 @@
+.card__tooltip {
+  max-width: 55%;
+  position: absolute;
+  top: 20px;
+  left: 55px;
+  padding: 5px;
+  background-color: #333;
+  border-radius: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.card__tooltip span {
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: white;
+}
+
+.card__tooltip::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -9px;
+  transform: translateY(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #333 transparent transparent;
+}
+
+.card__photo-item-user:hover + .card__tooltip {
+  opacity: 1;
+  visibility: visible;
+}

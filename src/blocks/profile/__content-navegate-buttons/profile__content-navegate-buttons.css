@@ -1,0 +1,20 @@
+.profile__content-navegate-buttons {
+  height: fit-content;
+  width: 100%;
+  max-width: 880px;
+  display: flex;
+  gap: 20px;
+  padding-bottom: 40px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .profile__content-navegate-buttons {
+    max-width: 580px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .profile__content-navegate-buttons {
+    width: 280px;
+  }
+}

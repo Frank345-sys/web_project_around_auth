@@ -1,10 +1,13 @@
 .photos-grid {
+  height: auto;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
-
+/*
 @media screen and (max-width: 768px) {
   .photos-grid {
     padding: 0 19px;
   }
 }
+*/

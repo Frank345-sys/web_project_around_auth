@@ -28,7 +28,6 @@ import * as auth from "../utils/auth";
 
 function App() {
   const navigate = useNavigate();
-
   const location = useLocation();
 
   //useState
@@ -38,11 +37,20 @@ function App() {
   const [isModalOpenInfoTooltip, setIsModalOpenInfoTooltip] = useState(false);
   const [isMessageInfoTooltip, setIsMessageInfoTooltip] = useState("");
   const [isIconInfoTooltip, setIsIconInfoTooltip] = useState("");
-
   const [currentUser, setCurrentUser] = useState(null);
-  const [isLoadCards, setIsLoadCards] = useState(false);
-  const [deletedCard, setDeletedCard] = useState(false);
-  const [cards, setCards] = useState([]);
+
+  const [updateCards, setUpdateCards] = useState(false);
+
+  const [switchCards, setSwitchCards] = useState(false);
+
+  const [isMyProfile, setIsMyProfile] = useState(true);
+
+  const [isLoadAllCards, setIsLoadAllCards] = useState(false);
+  const [isLoadMyCards, setIsLoadMyCards] = useState(false);
+  const [isLoadUserCards, setIsLoadUserCards] = useState(false);
+  const [allCards, setAllCards] = useState([]);
+  const [myCards, setMyCards] = useState([]);
+  const [userCards, setUserCards] = useState([]);
 
   //metodos para iniciar o cerrar la sesión
   const isLogginTrue = useCallback(() => setIsLoggedIn(true), []);
@@ -66,7 +74,7 @@ function App() {
 
   /* ////////////////////// check Token ////////////////////// */
 
-  const tokenCheck = useRef(async () => {
+  const tokenCheck = useCallback(async () => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       auth
@@ -74,27 +82,35 @@ function App() {
         .then((res) => {
           if (res) {
             isLogginTrue();
-            navigate("/web_project_around_auth/main");
-            setEmail(res.data.email);
+            navigate("/main");
+            setEmail(res.email);
           }
         })
-        .catch((err) => {
-          //openErrorModal();
-          openModalInfoTooltip(
-            "Uy, algo salió mal. La aplicación esta fuera de servicio temporalmente.",
-            vector_error_icon
-          );
-          //console.error("Error al obtener el token: " + err);
+        .catch((error) => {
+          if (error.message.includes("Failed to fetch")) {
+            openModalInfoTooltip(
+              "Uy, falló en la conexión con el servidor, intentalo más tarde.",
+              vector_error_icon
+            );
+            navigate("/login");
+          } else {
+            openModalInfoTooltip(
+              "Uy, la sesión expiro, inicia sesión nuevamente.",
+              vector_error_icon
+            );
+          }
         })
         .finally(() => {
           setIsLoadingPage(true);
         });
+    } else {
+      setIsLoadingPage(true);
     }
-  });
+  }, [isLogginTrue, navigate, openModalInfoTooltip]);
 
   useLayoutEffect(() => {
-    tokenCheck.current();
-  }, []);
+    tokenCheck();
+  }, [tokenCheck]);
 
   /* ////////////////////// check Token ////////////////////// */
 
@@ -121,26 +137,151 @@ function App() {
 
   /* ////////////////////// fetch Cards ////////////////////// */
 
-  const fetchCards = useCallback(async () => {
+  const fetchAllCards = useCallback(async () => {
     try {
       const result = await api.get("cards");
-      setCards(result);
-      setIsLoadCards(true);
+      setAllCards(result);
+      setIsLoadAllCards(true);
     } catch (error) {
-      console.error("Error al obtener las cards: ", error);
+      openModalInfoTooltip(
+        "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+        vector_error_icon
+      );
+      //navigate("/login");
     }
-  }, []);
+  }, [openModalInfoTooltip]);
+
+  const fetchMyCards = useCallback(async () => {
+    try {
+      const result = await api.get("cards/me");
+      setMyCards(result);
+      setIsLoadMyCards(true);
+    } catch (error) {
+      console.log(error);
+      openModalInfoTooltip(
+        "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+        vector_error_icon
+      );
+      //navigate("/login");
+    }
+  }, [openModalInfoTooltip]);
+
+  const fetchUserCards = useCallback(
+    async (idUser) => {
+      try {
+        setIsLoadAllCards(false);
+        const result = await api.get(`cards/user/${idUser}`);
+        setUserCards(result);
+        setIsLoadUserCards(true);
+      } catch (error) {
+        openModalInfoTooltip(
+          "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+          vector_error_icon
+        );
+        //navigate("/login");
+      }
+    },
+    [openModalInfoTooltip]
+  );
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetchCards();
+      if (isMyProfile) {
+        if (switchCards) {
+          setIsLoadAllCards(false);
+          fetchMyCards();
+        } else {
+          setIsLoadUserCards(false);
+          setIsLoadMyCards(false);
+          fetchAllCards();
+        }
+      }
     } else {
-      setCards([]);
-      setIsLoadCards(false);
+      setMyCards([""]);
+      setIsLoadMyCards(false);
+      setAllCards([""]);
+      setIsLoadAllCards(false);
+      setUserCards([""]);
+      setIsLoadUserCards(false);
     }
-  }, [isLoggedIn, deletedCard, fetchCards]);
+  }, [
+    isLoggedIn,
+    updateCards,
+    switchCards,
+    isMyProfile,
+    fetchAllCards,
+    fetchMyCards,
+  ]);
 
   /* ////////////////////// fetch Cards ////////////////////// */
+
+  /* ///////////////////// update Page ////////////////////// */
+
+  const [isCardAdded, setIsCardAdded] = useState(false);
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  useEffect(() => {
+    let scrollTimeout;
+
+    const handleScroll = () => {
+      //si el scroll se mueve se limpia el setTimeout para que no se ejecute
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      // si el scroll se detiene se ejecuta el setTimeout
+      scrollTimeout = setTimeout(() => {
+        //aparece la card despues de 0.3s de forma suave y se remueve el handlescroll
+        setIsCardAdded(false);
+      }, 150); // Tiempo de espera para detectar cuando el scroll se detiene
+    };
+
+    if (isCardAdded) {
+      const doSomethingAfterDelay = async () => {
+        // cuando se agregue la card se esperará 0.3s de forma sincrónica que es el tiempo que tarda el modal en cerrar
+        await wait(300);
+        // función que comprueba si el scroll ya está en el fondo de la página
+        const checkIfAtBottom = async () => {
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
+          const windowHeight = window.innerHeight;
+          const documentHeight = document.documentElement.scrollHeight;
+
+          if (scrollTop + windowHeight >= documentHeight - 1) {
+            // Espera 0.3 segundos de forma sincrónica
+            await wait(150);
+            // aparece la card despues de forma suave despues de 0.3s
+            setIsCardAdded(false);
+            //se sale del useEffect
+            return true; // Retorna verdadero si ya está en el fondo
+          }
+          return false; // Retorna falso si no está en el fondo y continua con la ejecución del useEffect
+        };
+
+        // Se ejecuta la función para comprobar la posición del scroll
+        const isBottom = await checkIfAtBottom();
+
+        // Solo se agrega el evento handleScroll si no está al fondo
+        if (!isBottom) {
+          // se agrega el evento handleScroll para detectar cuando baja el scroll
+          window.addEventListener("scroll", handleScroll);
+          // se moverá el scroll automaticamente al fondo
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth",
+          });
+        }
+      };
+
+      doSomethingAfterDelay();
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+    };
+  }, [isCardAdded]);
 
   /* ///////////////////// Cerrar sesión ///////////////////// */
   const handleSignOut = useCallback(() => {
@@ -157,19 +298,6 @@ function App() {
     });
   }, []);
 
-  /* ////////////////////// Crear Card ////////////////////// */
-  const handleFormCreateCardSubmit = useCallback(async (name, imageUrl) => {
-    try {
-      const result = await api.post("cards", {
-        name: name,
-        link: imageUrl,
-      });
-      setCards((prevCards) => [result, ...prevCards]);
-    } catch (error) {
-      throw error; // re-lanza el error para ser capturado en handleSubmit en AddPlacePopup
-    }
-  }, []);
-
   /* //////////////////// Editar avatar //////////////////// */
   const handleFormEditAvatarSubmit = useCallback((url) => {
     return api.patch("users/me/avatar", {
@@ -177,11 +305,27 @@ function App() {
     });
   }, []);
 
+  /* ////////////////////// Crear Card ////////////////////// */
+  const handleFormCreateCardSubmit = useCallback(async (name, imageUrl) => {
+    try {
+      await api.post("cards", {
+        name: name,
+        link: imageUrl,
+      });
+      //actualiza la lista de cards
+      setUpdateCards((prev) => !prev);
+      //oculta la card agregada recientemente para mostrarla de forma dinamica
+      setIsCardAdded(true);
+    } catch (error) {
+      throw error; // re-lanza el error para ser capturado en handleSubmit en AddPlacePopup
+    }
+  }, []);
+
   /* //////////////////// Eliminar card //////////////////// */
   const handleCardDelete = useCallback(async (cardId) => {
     try {
       await api.delete(`cards/${cardId}`);
-      setDeletedCard((prev) => !prev);
+      setUpdateCards((prev) => !prev);
     } catch (error) {
       throw error; // re-lanza el error para ser capturado en handleConfirmDeleteSubmit en Main
     }
@@ -189,12 +333,12 @@ function App() {
 
   /* ///////////////////// Like card ////////////////////// */
   const handleLikeCard = useCallback((idCard) => {
-    return api.put(`cards/likes/${idCard}`);
+    return api.put(`cards/like/${idCard}`);
   }, []);
 
   /* //////////////////// Dislike card //////////////////// */
   const handleDislikeCard = useCallback((idCard) => {
-    return api.delete(`cards/likes/${idCard}`);
+    return api.delete(`cards/like/${idCard}`);
   }, []);
 
   return (
@@ -226,7 +370,7 @@ function App() {
               <div ref={contentRoutesRef}>
                 <Routes location={location}>
                   <Route
-                    path="/web_project_around_auth/login"
+                    path="/login"
                     element={
                       <Login
                         navigate={navigate}
@@ -237,7 +381,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="/web_project_around_auth/register"
+                    path="/register"
                     element={
                       <Register
                         navigate={navigate}
@@ -246,7 +390,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="/web_project_around_auth/main"
+                    path="/main"
                     element={
                       <ProtectedRoute
                         loggedIn={isLoggedIn}
@@ -258,26 +402,32 @@ function App() {
                         onLikeCard={handleLikeCard}
                         onDisLikeCard={handleDislikeCard}
                         openModalInfoTooltip={openModalInfoTooltip}
-                        isLoadCards={isLoadCards}
-                        cards={cards}
+                        onSwitchCards={setSwitchCards}
+                        switchCards={switchCards}
+                        isLoadAllCards={isLoadAllCards}
+                        allCards={allCards}
+                        isLoadMyCards={isLoadMyCards}
+                        myCards={myCards}
+                        isCardAdded={isCardAdded}
+                        onFetchUserCards={fetchUserCards}
+                        onMyProfile={setIsMyProfile}
+                        isMyProfile={isMyProfile}
+                        userCards={userCards}
+                        isLoadUserCards={isLoadUserCards}
                       ></ProtectedRoute>
                     }
                   />
-                  <Route
-                    path="*"
-                    element={<Navigate to="/web_project_around_auth/login" />}
-                  />
+                  <Route path="*" element={<Navigate to="/login" />} />
                 </Routes>
               </div>
             </CSSTransition>
           </SwitchTransition>
         ) : (
-          <div className="loading-page">
+          <div className="loading-page-main">
             <ReactLoading type={"bubbles"} color="#f4f4f4" />
           </div>
         )}
-
-        <Footer />
+        <Footer isLoggin={isLoggedIn} />
       </CurrentUserContext.Provider>
     </div>
   );

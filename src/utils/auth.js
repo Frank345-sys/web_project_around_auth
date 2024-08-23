@@ -1,5 +1,6 @@
-export const BASE_URL = "https://register.nomoreparties.co";
-
+//export const BASE_URL = "https://register.nomoreparties.co";
+//export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://api.around-project.mega-link.cl";
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const register = (password, email) => {

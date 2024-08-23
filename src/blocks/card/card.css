@@ -1,5 +1,60 @@
 .card {
   width: 100%;
+  height: fit-content;
+  width: 280px;
+  display: grid;
+  grid-template-rows: 280px 80px;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 15px transparent;
+  opacity: 1;
+  border: 1px solid black;
+  transition: all 0.3s ease-in-out;
+}
+
+.card_border {
+  border: 1px solid #2196f3;
+}
+
+.card-added:last-child {
+  opacity: 0;
+  pointer-events: none; /* Evitar interacción mientras está invisible */
+  transition: opacity 0.3s ease-in-out; /* Asegura que opacity también tenga una transición suave */
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px #2196f3;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:nth-child(3n-2) {
+  animation: fadeInCard 0.4s ease-in-out both;
+}
+
+.card:nth-child(3n-1) {
+  animation: fadeInCard 0.6s ease-in-out both;
+}
+
+.card:nth-child(3n) {
+  animation: fadeInCard 0.8s ease-in-out both;
+}
+
+/* Ejemplo de la animación fadeInCard */
+@keyframes fadeInCard {
+  from {
+    top: -50px;
+  }
+  to {
+    top: 0;
+  }
+}
+
+/*
+.card {
+  width: 100%;
   max-width: 280px;
   display: grid;
   grid-template-rows: 280px 80px;
@@ -11,30 +66,11 @@
   transition: all 0.3s;
 }
 
-/*
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: skewX(-20deg);
-  transition: left 0.6s;
-  opacity: 0;
+.card-added:last-child {
+  box-shadow: 0 0 10px #2196f3;
+  opacity: 0 !important;
+  transition: all 0.3s ease;
 }
-
-.card:hover::before {
-  left: 150%;
-  opacity: 1;
-}
-*/
 
 .card:hover {
   transform: scale(1.03);
@@ -64,9 +100,9 @@
     top: 0;
   }
 }
+*/
 
 /*
-
 @keyframes shimmerEffect {
   0% {
     left: -150%;
@@ -109,5 +145,30 @@
   background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
   background-size: 1000px 104px;
   position: relative;
+}
+*/
+
+/*
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s;
+  opacity: 0;
+}
+
+.card:hover::before {
+  left: 150%;
+  opacity: 1;
 }
 */

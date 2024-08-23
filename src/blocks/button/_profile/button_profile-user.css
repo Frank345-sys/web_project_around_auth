@@ -1,0 +1,14 @@
+.button_profile-user {
+  height: auto;
+  padding: 10px 20px;
+  border: 2px solid white;
+  background-color: transparent;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+@media screen and (max-width: 768px) {
+  .button_profile-user {
+    font-size: small;
+    padding: 10px 18px;
+  }
+}

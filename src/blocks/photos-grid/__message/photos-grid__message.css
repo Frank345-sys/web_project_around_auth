@@ -1,0 +1,10 @@
+.photos-grid__message {
+  width: 100%;
+  /*min-height: 280px;*/
+  padding: 65px 0;
+  max-width: 880px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #545454;
+}
