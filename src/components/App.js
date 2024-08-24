@@ -89,13 +89,13 @@ function App() {
         .catch((error) => {
           if (error.message.includes("Failed to fetch")) {
             openModalInfoTooltip(
-              "Uy, falló en la conexión con el servidor, intentalo más tarde.",
+              "¡Uy!, falló en la conexión con el servidor.",
               vector_error_icon
             );
             navigate("/login");
           } else {
             openModalInfoTooltip(
-              "Uy, la sesión expiro, inicia sesión nuevamente.",
+              "¡Uy!, la sesión expiro, inicia sesión nuevamente.",
               vector_error_icon
             );
           }
@@ -121,9 +121,19 @@ function App() {
       const result = await api.get("users/me");
       setCurrentUser(result);
     } catch (error) {
-      console.error("Error al obtener los datos del usuario:", error);
+      if (error.message.includes("Failed to fetch")) {
+        openModalInfoTooltip(
+          "¡Uy!, falló en la conexión con el servidor.",
+          vector_error_icon
+        );
+      } else {
+        openModalInfoTooltip(
+          "¡Uy!, error al obtener tus datos.",
+          vector_error_icon
+        );
+      }
     }
-  }, []);
+  }, [openModalInfoTooltip]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -143,11 +153,17 @@ function App() {
       setAllCards(result);
       setIsLoadAllCards(true);
     } catch (error) {
-      openModalInfoTooltip(
-        "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
-        vector_error_icon
-      );
-      //navigate("/login");
+      if (error.message.includes("Failed to fetch")) {
+        openModalInfoTooltip(
+          "¡Uy!, falló en la conexión con el servidor.",
+          vector_error_icon
+        );
+      } else {
+        openModalInfoTooltip(
+          "¡Uy!, error al obtener todas las cards de la comunidad.",
+          vector_error_icon
+        );
+      }
     }
   }, [openModalInfoTooltip]);
 
@@ -157,32 +173,30 @@ function App() {
       setMyCards(result);
       setIsLoadMyCards(true);
     } catch (error) {
-      console.log(error);
-      openModalInfoTooltip(
-        "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
-        vector_error_icon
-      );
-      //navigate("/login");
+      if (error.message.includes("Failed to fetch")) {
+        openModalInfoTooltip(
+          "¡Uy!, falló en la conexión con el servidor.",
+          vector_error_icon
+        );
+      } else {
+        openModalInfoTooltip(
+          "¡Uy!, error al obtener tus cards.",
+          vector_error_icon
+        );
+      }
     }
   }, [openModalInfoTooltip]);
 
-  const fetchUserCards = useCallback(
-    async (idUser) => {
-      try {
-        setIsLoadAllCards(false);
-        const result = await api.get(`cards/user/${idUser}`);
-        setUserCards(result);
-        setIsLoadUserCards(true);
-      } catch (error) {
-        openModalInfoTooltip(
-          "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
-          vector_error_icon
-        );
-        //navigate("/login");
-      }
-    },
-    [openModalInfoTooltip]
-  );
+  const fetchUserCards = useCallback(async (idUser) => {
+    try {
+      setIsLoadAllCards(false);
+      const result = await api.get(`cards/user/${idUser}`);
+      setUserCards(result);
+      setIsLoadUserCards(true);
+    } catch (error) {
+      throw error; // re-lanza el error para ser capturado en handleViewProfile en Main
+    }
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {

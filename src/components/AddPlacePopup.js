@@ -69,7 +69,7 @@ const AddPlacePopup = memo(
       } catch (error) {
         if (error.message.includes("Failed to fetch")) {
           openModalInfoTooltip(
-            "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+            "¡Uy!, falló en la conexión con el servidor.",
             vector_error_icon
           );
           //navigate("/login");
@@ -141,7 +141,7 @@ const AddPlacePopup = memo(
                 id="input-url"
                 type="url"
                 name="url"
-                placeholder="Ingrese la URL del lugar"
+                placeholder="Ingresa una URL de imagen (.jpg, .png) del lugar"
                 required
                 ref={inputUrlPlaceRef}
                 onChange={handleInputUrlPlaceChange}

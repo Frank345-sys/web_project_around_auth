@@ -52,13 +52,13 @@ const Card = memo(
         } catch (error) {
           if (error.message.includes("Failed to fetch")) {
             openModalInfoTooltip(
-              "¡Uy!, falló en la conexión con el servidor. Serás redirigido.",
+              "¡Uy!, falló en la conexión con el servidor.",
               vector_error_icon
             );
             //navigate("/login");
           } else {
             openModalInfoTooltip(
-              "¡Uy!, algo salió mal. Error al dar Dislike a la tarjeta.",
+              "¡Uy!, algo salió mal. Error al dar Dislike a la card.",
               vector_error_icon
             );
           }
@@ -71,13 +71,13 @@ const Card = memo(
         } catch (error) {
           if (error.message.includes("Failed to fetch")) {
             openModalInfoTooltip(
-              "¡Uy!, falló en la conexión con el servidor. Serás redirigido.",
+              "¡Uy!, falló en la conexión con el servidor.",
               vector_error_icon
             );
             //navigate("/login");
           } else {
             openModalInfoTooltip(
-              "¡Uy!, algo salió mal. Error al dar like a la tarjeta.",
+              "¡Uy!, algo salió mal. Error al dar like a la card.",
               vector_error_icon
             );
           }

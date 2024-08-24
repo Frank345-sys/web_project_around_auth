@@ -40,13 +40,13 @@ const ConfirmDeleteCardPopup = memo(
       } catch (error) {
         if (error.message.includes("Failed to fetch")) {
           openModalInfoTooltip(
-            "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+            "¡Uy!, falló en la conexión con el servidor.",
             vector_error_icon
           );
           //navigate("/login");
         } else {
           openModalInfoTooltip(
-            "¡Uy!, algo salió mal. Error al eliminar la tarjeta.",
+            "¡Uy!, algo salió mal. Error al eliminar la card.",
             vector_error_icon
           );
         }

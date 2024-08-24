@@ -100,13 +100,13 @@ const EditProfilePopup = memo(
       } catch (error) {
         if (error.message.includes("Failed to fetch")) {
           openModalInfoTooltip(
-            "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+            "¡Uy!, falló en la conexión con el servidor.",
             vector_error_icon
           );
           //navigate("/login");
         } else {
           openModalInfoTooltip(
-            "¡Uy!, algo salió mal, error al actualizar los datos.",
+            "¡Uy!, algo salió mal, error al actualizar tus datos.",
             vector_error_icon
           );
         }
@@ -149,10 +149,10 @@ const EditProfilePopup = memo(
                 id="input-name"
                 type="text"
                 name="name"
-                placeholder="Ingrese el nombre"
+                placeholder="Ingrese su nombre"
                 required
                 minLength="2"
-                maxLength="40"
+                maxLength="30"
                 ref={inputNameRef}
                 value={name}
                 onChange={handleInputNameChange}
@@ -172,10 +172,10 @@ const EditProfilePopup = memo(
                 id="input-occupation"
                 type="text"
                 name="occupation"
-                placeholder="Ingrese la ocupación"
+                placeholder="Ingrese su ocupación"
                 required
                 minLength="2"
-                maxLength="200"
+                maxLength="30"
                 ref={inputOccupationRef}
                 value={occupation}
                 onChange={handleInputOccupationChange}

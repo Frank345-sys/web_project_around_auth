@@ -87,7 +87,7 @@ function Login({ navigate, logginTrue, openModalInfoTooltip, setEmailUser }) {
           );
         } else {
           openModalInfoTooltip(
-            "¡Uy!, algo salió mal. Uno o más campos contienen datos no válidos.",
+            "¡Uy!, algo salió mal, uno o más campos contienen datos no válidos.",
             vector_error_icon
           );
         }
@@ -117,7 +117,6 @@ function Login({ navigate, logginTrue, openModalInfoTooltip, setEmailUser }) {
                 name="emailUser"
                 required
                 minLength="2"
-                maxLength="40"
                 ref={inputEmailRef}
                 value={values.emailUser}
                 onChange={(e) => {

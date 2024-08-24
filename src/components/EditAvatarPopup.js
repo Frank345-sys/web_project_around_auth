@@ -68,13 +68,13 @@ const EditAvatarPopup = memo(
       } catch (error) {
         if (error.message.includes("Failed to fetch")) {
           openModalInfoTooltip(
-            "¡Uy!, falló en la conexión con el servidor, serás redirigido.",
+            "¡Uy!, falló en la conexión con el servidor.",
             vector_error_icon
           );
           //navigate("/login");
         } else {
           openModalInfoTooltip(
-            "¡Uy!, algo salió mal. Error al actualizar la foto de perfil.",
+            "¡Uy!, algo salió mal. Error al actualizar la foto de tu perfil.",
             vector_error_icon
           );
         }
@@ -117,7 +117,7 @@ const EditAvatarPopup = memo(
                 id="input-url-edit"
                 type="url"
                 name="url"
-                placeholder="Ingrese la URL de la foto"
+                placeholder="Ingresa una URL de imagen (.jpg, .png)"
                 required
                 value={urlAvatar}
                 ref={inputUrlAvatarRef}

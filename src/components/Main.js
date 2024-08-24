@@ -197,10 +197,14 @@ function Main({
       } catch (error) {
         if (error.message.includes("Failed to fetch")) {
           openModalInfoTooltip(
-            "¡Uy!, falló en la conexión con el servidor. Serás redirigido.",
+            "¡Uy!, falló en la conexión con el servidor.",
             vector_error_icon
           );
-          //navigate("/login");
+        } else {
+          openModalInfoTooltip(
+            "¡Uy!, error al obtener las cards del usuario visitado.",
+            vector_error_icon
+          );
         }
       }
     },
