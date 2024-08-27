@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "https://Frank345-sys.github.io/web_project_around_auth/static/css/main.f6542751.css",
+    "main.css": "https://Frank345-sys.github.io/web_project_around_auth/static/css/main.c19a4520.css",
     "main.js": "https://Frank345-sys.github.io/web_project_around_auth/static/js/main.01f6e0cf.js",
     "static/js/453.8d428687.chunk.js": "https://Frank345-sys.github.io/web_project_around_auth/static/js/453.8d428687.chunk.js",
     "static/media/Inter-MediumItalic.woff?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-MediumItalic.3d0107dd43d0101274d3.woff",
@@ -16,12 +16,12 @@
     "static/media/Inter-Black.woff2?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
     "static/media/Inter-Regular.woff2?v=3.19": "https://Frank345-sys.github.io/web_project_around_auth/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
     "index.html": "https://Frank345-sys.github.io/web_project_around_auth/index.html",
-    "main.f6542751.css.map": "https://Frank345-sys.github.io/web_project_around_auth/static/css/main.f6542751.css.map",
+    "main.c19a4520.css.map": "https://Frank345-sys.github.io/web_project_around_auth/static/css/main.c19a4520.css.map",
     "main.01f6e0cf.js.map": "https://Frank345-sys.github.io/web_project_around_auth/static/js/main.01f6e0cf.js.map",
     "453.8d428687.chunk.js.map": "https://Frank345-sys.github.io/web_project_around_auth/static/js/453.8d428687.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f6542751.css",
+    "static/css/main.c19a4520.css",
     "static/js/main.01f6e0cf.js"
   ]
 }
