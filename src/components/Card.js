@@ -114,7 +114,7 @@ const Card = memo(
               src={user.avatar}
             />
           </button>
-          <div class="card__tooltip">
+          <div className="card__tooltip">
             <span>{currentUser._id === user._id ? "Tú" : tooltipMs}</span>
           </div>
 

@@ -11,7 +11,9 @@
   box-shadow: 0 0 15px transparent;
   opacity: 1;
   border: 1px solid black;
-  transition: all 0.3s ease-in-out;
+  /*transition: all 0.3s ease-in-out;*/
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
 }
 
 .card_border {
@@ -20,8 +22,11 @@
 
 .card-added:last-child {
   opacity: 0;
-  pointer-events: none; /* Evitar interacción mientras está invisible */
-  transition: opacity 0.3s ease-in-out; /* Asegura que opacity también tenga una transición suave */
+  pointer-events: none;
+  transition-delay: 0.3s;
+  /* transition-delay: 0.1s;
+  Evitar interacción mientras está invisible */
+  /*transition: opacity 0.3s ease-in-out;  Asegura que opacity también tenga una transición suave */
 }
 
 .card:hover {
@@ -31,15 +36,15 @@
 }
 
 .card:nth-child(3n-2) {
-  animation: fadeInCard 0.4s ease-in-out both;
+  animation: fadeInCard 0.3s ease-in-out both;
 }
 
 .card:nth-child(3n-1) {
-  animation: fadeInCard 0.6s ease-in-out both;
+  animation: fadeInCard 0.5s ease-in-out both;
 }
 
 .card:nth-child(3n) {
-  animation: fadeInCard 0.8s ease-in-out both;
+  animation: fadeInCard 0.7s ease-in-out both;
 }
 
 /* Ejemplo de la animación fadeInCard */

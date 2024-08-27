@@ -19,6 +19,16 @@ const AddPlacePopup = memo(
 
     const [statusCreateCard, setStatusCreateCard] = useState(false);
 
+    useEffect(() => {
+      if (!isOpen) {
+        inputNamePlaceRef.current.value = "";
+        inputUrlPlaceRef.current.value = "";
+        setErrorNamePlace(false);
+        setErrorUrlPlace(false);
+        setIsSubmitButtonDisabled(true);
+      }
+    }, [isOpen]);
+
     const handleOutsideClick = (e) => {
       if (e.target === e.currentTarget && statusCreateCard === false) {
         onClose();
@@ -128,11 +138,23 @@ const AddPlacePopup = memo(
               />
               <span
                 className={`error error_input-name-place ${
-                  errorNamePlace ? "error_active" : ""
+                  errorNamePlace
+                    ? "error_active"
+                    : `${
+                        inputNamePlaceRef.current &&
+                        inputNamePlaceRef.current.value.length >= 2
+                          ? "error_inactive"
+                          : ""
+                      } `
                 }`}
               >
-                {inputNamePlaceRef.current &&
-                  inputNamePlaceRef.current.validationMessage}
+                {`${
+                  inputNamePlaceRef.current &&
+                  inputNamePlaceRef.current.validationMessage
+                } caracteres: ${
+                  inputNamePlaceRef.current &&
+                  inputNamePlaceRef.current.value.length
+                }/30`}
               </span>
               <input
                 className={`input input_url ${
@@ -143,17 +165,30 @@ const AddPlacePopup = memo(
                 name="url"
                 placeholder="Ingresa una URL de imagen (.jpg, .png) del lugar"
                 required
+                maxLength="200"
                 ref={inputUrlPlaceRef}
                 onChange={handleInputUrlPlaceChange}
                 disabled={statusCreateCard}
               />
               <span
                 className={`error error_input-url ${
-                  errorUrlPlace ? "error_active" : ""
+                  errorUrlPlace
+                    ? "error_active"
+                    : `${
+                        inputUrlPlaceRef.current &&
+                        inputUrlPlaceRef.current.value.length >= 2
+                          ? "error_inactive"
+                          : ""
+                      } `
                 }`}
               >
-                {inputUrlPlaceRef.current &&
-                  inputUrlPlaceRef.current.validationMessage}
+                {`${
+                  inputUrlPlaceRef.current &&
+                  inputUrlPlaceRef.current.validationMessage
+                } caracteres: ${
+                  inputUrlPlaceRef.current &&
+                  inputUrlPlaceRef.current.value.length
+                }/200`}
               </span>
               <button
                 className={`button button_add ${

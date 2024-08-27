@@ -1,8 +1,9 @@
 .error {
-  display: table-cell;
-  width: 100%;
+  display: block;
+  /*width: 100%;
   vertical-align: middle;
-  height: 28px;
+  height: 28px;*/
+  min-height: 28px;
   color: red;
   font-size: 12px;
   visibility: hidden;

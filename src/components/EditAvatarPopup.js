@@ -26,9 +26,8 @@ const EditAvatarPopup = memo(
     };
 
     useEffect(() => {
-      if (isOpen) {
-        setUrlAvatar("");
-      } else {
+      if (!isOpen) {
+        inputUrlAvatarRef.current.value = "";
         setErrorUrlAvatar(false);
         setIsSubmitButtonDisabled(true);
       }
@@ -51,6 +50,12 @@ const EditAvatarPopup = memo(
         document.body.style.overflow = "auto";
       };
     }, [isOpen, statusEditPhoto, onClose]);
+
+    /*
+    useEffect(() => {
+      setErrorUrlAvatar(!inputUrlAvatarRef.current.validity.valid);
+    }, [urlAvatar]);
+    */
 
     const handleAvatarChange = (e) => {
       setErrorUrlAvatar(!inputUrlAvatarRef.current.validity.valid);
@@ -119,18 +124,29 @@ const EditAvatarPopup = memo(
                 name="url"
                 placeholder="Ingresa una URL de imagen (.jpg, .png)"
                 required
-                value={urlAvatar}
                 ref={inputUrlAvatarRef}
                 onChange={handleAvatarChange}
                 disabled={statusEditPhoto}
               />
               <span
                 className={`error error_input-url-edit ${
-                  errorUrlAvatar ? "input_error-active" : ""
+                  errorUrlAvatar
+                    ? "error_active"
+                    : `${
+                        inputUrlAvatarRef.current &&
+                        inputUrlAvatarRef.current.value.length >= 2
+                          ? "error_inactive"
+                          : ""
+                      } `
                 }`}
               >
-                {inputUrlAvatarRef.current &&
-                  inputUrlAvatarRef.current.validationMessage}
+                {`${
+                  inputUrlAvatarRef.current &&
+                  inputUrlAvatarRef.current.validationMessage
+                } caracteres: ${
+                  inputUrlAvatarRef.current &&
+                  inputUrlAvatarRef.current.value.length
+                }/30`}
               </span>
               <button
                 className={`button button_edit-photo ${

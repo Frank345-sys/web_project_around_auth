@@ -41,9 +41,6 @@ function Main({
   userCards,
   isLoadUserCards,
 }) {
-  //profile
-  //const [isMyProfile, setIsMyProfile] = useState(true);
-
   //useRefs
   const nameRef = useRef(null);
   const aboutRef = useRef(null);
@@ -56,7 +53,9 @@ function Main({
   const [about, setAbout] = useState("");
   const [avatar, setAvatar] = useState("");
 
-  const [user, setUser] = useState("");
+  //view user profile
+  const [visitedUserData, setVisitedUserData] = useState("");
+  const [isVisitedUserProfile, setIsVisitedUserProfile] = useState(false);
 
   const setNewName = useCallback((newName) => {
     setName(newName);
@@ -150,50 +149,13 @@ function Main({
     setIsPopupImage(false);
   }, []);
 
-  /*
-  const scrollToDiv = () => {
-    if (containerRef.current) {
-      const posicion = containerRef.current.getBoundingClientRect();
-      const posY = posicion.top + window.scrollY;
+  useEffect(() => {
+    let scrollTimeout;
 
-      window.scrollTo({
-        top: posY,
-        behavior: "smooth",
-      });
-    }
-  };
-  */
-  /*
- <SwitchTransition>
-                  <CSSTransition
-                    key={about}
-                    nodeRef={aboutRef}
-                    timeout={300}
-                    classNames="fade"
-                    unmountOnExit
-                  >
-                    <h3
-                      ref={aboutRef}
-                      className={`content-prof-info-text__ocupation ${
-                        isLoadInfoUser ? "" : "shimmer"
-                      }`}
-                    >
-                      {about}
-                    </h3>
-                  </CSSTransition>
-                </SwitchTransition>
- */
-
-  const handleViewProfile = useCallback(
-    async (user) => {
+    const viewProfile = async () => {
       try {
         onMyProfile(false);
-        window.scrollTo({
-          top: 0,
-          //behavior: "smooth",
-        });
-        setUser(user);
-        await onFetchUserCards(user._id);
+        await onFetchUserCards(visitedUserData._id);
       } catch (error) {
         if (error.message.includes("Failed to fetch")) {
           openModalInfoTooltip(
@@ -206,18 +168,82 @@ function Main({
             vector_error_icon
           );
         }
+        onMyProfile(true);
+        setVisitedUserData("");
+      } finally {
+        setIsVisitedUserProfile(false);
       }
-    },
-    [onMyProfile, onFetchUserCards, openModalInfoTooltip]
-  );
+    };
+
+    const handleScroll = () => {
+      //si el scroll se mueve se limpia el setTimeout para que no se ejecute
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      // si el scroll se detiene se ejecuta el setTimeout
+      scrollTimeout = setTimeout(() => {
+        viewProfile();
+        //aparece los datos del perfil visitado de forma suave
+      }, 150); // Tiempo de espera para detectar cuando el scroll se detiene
+    };
+
+    if (isVisitedUserProfile) {
+      const doSomethingAfterDelay = async () => {
+        // función que comprueba si el scroll ya está al principio de la página
+        const checkIfAtTop = async () => {
+          if (window.scrollY === 0) {
+            // aparece el perfil del usuario visitado de forma suave
+            viewProfile();
+            //se sale de la función
+            return true; // Retorna verdadero si el scroll ya está en el inicio
+          }
+          return false; // Retorna falso si no está al inicio de la página y continua con la ejecución
+        };
+
+        // Se ejecuta la función para comprobar la posición del scroll
+        const isTop = await checkIfAtTop();
+
+        // Solo se agrega el evento handleScroll si el scroll no está al inicio de la página
+        if (!isTop) {
+          // se agrega el evento handleScroll para detectar cuando sube el scroll
+          window.addEventListener("scroll", handleScroll);
+          // se moverá el scroll automaticamente al inicio de la página
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }
+      };
+
+      doSomethingAfterDelay();
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+    };
+  }, [
+    isVisitedUserProfile,
+    onFetchUserCards,
+    onMyProfile,
+    openModalInfoTooltip,
+    visitedUserData._id,
+  ]);
+
+  const handleViewProfile = useCallback((user) => {
+    setVisitedUserData(user);
+    setIsVisitedUserProfile(true);
+  }, []);
 
   const handleReturnProfile = useCallback(() => {
-    onMyProfile(true);
-    setUser("");
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+    onMyProfile(true);
+    setVisitedUserData("");
   }, [onMyProfile]);
 
   return (
@@ -483,8 +509,8 @@ function Main({
                     <div className="profile-info">
                       <div className={`profile-image `}>
                         <img
-                          alt={"foto de perfil de " + user.name}
-                          src={user.avatar}
+                          alt={"foto de perfil de " + visitedUserData.name}
+                          src={visitedUserData.avatar}
                           className="profile-image__image"
                         />
                       </div>
@@ -492,10 +518,10 @@ function Main({
                         <h2
                           className={`content-prof-info-text__name content-prof-info-text__name_with-100`}
                         >
-                          {user.name}
+                          {visitedUserData.name}
                         </h2>
                         <h3 className={`content-prof-info-text__ocupation`}>
-                          {user.about}
+                          {visitedUserData.about}
                         </h3>
                       </div>
                     </div>

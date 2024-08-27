@@ -41,6 +41,12 @@ function App() {
 
   const [updateCards, setUpdateCards] = useState(false);
 
+  const [updateCardsBCreateCard, setUpdateCardsBCreateCard] = useState(false);
+
+  const [isCardAdded, setIsCardAdded] = useState(false);
+
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const [switchCards, setSwitchCards] = useState(false);
 
   const [isMyProfile, setIsMyProfile] = useState(true);
@@ -189,7 +195,7 @@ function App() {
 
   const fetchUserCards = useCallback(async (idUser) => {
     try {
-      setIsLoadAllCards(false);
+      setIsLoadUserCards(false);
       const result = await api.get(`cards/user/${idUser}`);
       setUserCards(result);
       setIsLoadUserCards(true);
@@ -205,17 +211,16 @@ function App() {
           setIsLoadAllCards(false);
           fetchMyCards();
         } else {
-          setIsLoadUserCards(false);
           setIsLoadMyCards(false);
           fetchAllCards();
         }
       }
     } else {
-      setMyCards([""]);
+      setMyCards([]);
       setIsLoadMyCards(false);
-      setAllCards([""]);
+      setAllCards([]);
       setIsLoadAllCards(false);
-      setUserCards([""]);
+      setUserCards([]);
       setIsLoadUserCards(false);
     }
   }, [
@@ -227,12 +232,29 @@ function App() {
     fetchMyCards,
   ]);
 
+  useEffect(() => {
+    if (updateCardsBCreateCard) {
+      if (isMyProfile) {
+        if (switchCards) {
+          fetchMyCards();
+        } else {
+          fetchAllCards();
+        }
+        setIsCardAdded(true);
+      }
+      setUpdateCardsBCreateCard(false);
+    }
+  }, [
+    updateCardsBCreateCard,
+    isMyProfile,
+    switchCards,
+    fetchAllCards,
+    fetchMyCards,
+  ]);
+
   /* ////////////////////// fetch Cards ////////////////////// */
 
   /* ///////////////////// update Page ////////////////////// */
-
-  const [isCardAdded, setIsCardAdded] = useState(false);
-  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   useEffect(() => {
     let scrollTimeout;
@@ -261,11 +283,10 @@ function App() {
           const documentHeight = document.documentElement.scrollHeight;
 
           if (scrollTop + windowHeight >= documentHeight - 1) {
-            // Espera 0.3 segundos de forma sincrónica
+            // Espera 0.15 segundos de forma sincrónica
             await wait(150);
             // aparece la card despues de forma suave despues de 0.3s
             setIsCardAdded(false);
-            //se sale del useEffect
             return true; // Retorna verdadero si ya está en el fondo
           }
           return false; // Retorna falso si no está en el fondo y continua con la ejecución del useEffect
@@ -326,10 +347,7 @@ function App() {
         name: name,
         link: imageUrl,
       });
-      //actualiza la lista de cards
-      setUpdateCards((prev) => !prev);
-      //oculta la card agregada recientemente para mostrarla de forma dinamica
-      setIsCardAdded(true);
+      setUpdateCardsBCreateCard(true);
     } catch (error) {
       throw error; // re-lanza el error para ser capturado en handleSubmit en AddPlacePopup
     }

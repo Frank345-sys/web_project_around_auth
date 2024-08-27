@@ -34,7 +34,9 @@ const EditProfilePopup = memo(
     useEffect(() => {
       if (isOpen) {
         setName(nameUser);
+        //setErrorName(!inputNameRef.current.validity.valid);
         setOccupation(aboutUser);
+        //setErrorOccupation(!inputOccupationRef.current.validity.valid);
         setIsSubmitButtonDisabled(true);
       }
     }, [isOpen, nameUser, aboutUser]);
@@ -57,23 +59,22 @@ const EditProfilePopup = memo(
       };
     }, [isOpen, statusEdit, onClose]);
 
+    useEffect(() => {
+      setErrorName(!inputNameRef.current.validity.valid);
+    }, [name]);
+
+    useEffect(() => {
+      setErrorOccupation(!inputOccupationRef.current.validity.valid);
+    }, [occupation]);
+
     /*
-  useEffect(() => {
-    setErrorName(!inputNameRef.current.validity.valid);
-  }, [name]);
-
-  useEffect(() => {
-    setErrorOccupation(!inputOccupationRef.current.validity.valid);
-  }, [occupation]);
-
   useEffect(() => {
     setIsSubmitButtonDisabled(errorName || errorOccupation);
   }, [errorName, errorOccupation]);
-
   */
 
     const handleInputNameChange = (e) => {
-      setErrorName(!inputNameRef.current.validity.valid);
+      //setErrorName(!inputNameRef.current.validity.valid);
       setName(e.target.value);
       setIsSubmitButtonDisabled(
         !inputNameRef.current.validity.valid ||
@@ -82,7 +83,7 @@ const EditProfilePopup = memo(
     };
 
     const handleInputOccupationChange = (e) => {
-      setErrorOccupation(!inputOccupationRef.current.validity.valid);
+      //setErrorOccupation(!inputOccupationRef.current.validity.valid);
       setOccupation(e.target.value);
       setIsSubmitButtonDisabled(
         !inputNameRef.current.validity.valid ||
@@ -160,10 +161,21 @@ const EditProfilePopup = memo(
               />
               <span
                 className={`error error_input-name ${
-                  errorName ? "error_active" : ""
+                  errorName
+                    ? "error_active"
+                    : `${
+                        inputNameRef.current &&
+                        inputNameRef.current.value.length >= 2
+                          ? "error_inactive"
+                          : ""
+                      } `
                 }`}
               >
-                {inputNameRef.current && inputNameRef.current.validationMessage}
+                {`${
+                  inputNameRef.current && inputNameRef.current.validationMessage
+                } caracteres: ${
+                  inputNameRef.current && inputNameRef.current.value.length
+                }/30`}
               </span>
               <input
                 className={`input input_occupation ${
@@ -183,11 +195,23 @@ const EditProfilePopup = memo(
               />
               <span
                 className={`error error_input-occupation ${
-                  errorOccupation ? "error_active" : ""
+                  errorOccupation
+                    ? "error_active"
+                    : `${
+                        inputOccupationRef.current &&
+                        inputOccupationRef.current.value.length >= 2
+                          ? "error_inactive"
+                          : ""
+                      } `
                 }`}
               >
-                {inputOccupationRef.current &&
-                  inputOccupationRef.current.validationMessage}
+                {`${
+                  inputOccupationRef.current &&
+                  inputOccupationRef.current.validationMessage
+                } caracteres: ${
+                  inputOccupationRef.current &&
+                  inputOccupationRef.current.value.length
+                }/30`}
               </span>
               <button
                 className={`button button_edit ${
